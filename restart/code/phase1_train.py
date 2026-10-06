@@ -26,6 +26,7 @@ ap.add_argument('--B', type=int, default=256, help='DP expected (Poisson) batch 
 ap.add_argument('--trivial', action='store_true')
 ap.add_argument('--measure-C', action='store_true')
 ap.add_argument('--tag', default='')
+ap.add_argument('--save-model', action='store_true', help='also save weights to restart/cache/models/<tag>.pt')
 a = ap.parse_args()
 
 OUT = os.path.join(C.RESULTS, 'phase1')
@@ -123,6 +124,10 @@ rec.update({'history': hist, 'val_map50': hist[-1]['val_map50'], 'steps': steps,
             'seconds': time.time() - t0})
 if a.dp:
     rec['epsilon_delta1e-5'] = (float(pe.get_epsilon(1e-5)) if a.sigma > 0 else float('inf'))
+if a.save_model:
+    os.makedirs(os.path.join(C.CACHE, 'models'), exist_ok=True)
+    inner = model._module if hasattr(model, '_module') else model
+    torch.save(inner.state_dict(), os.path.join(C.CACHE, 'models', tag + '.pt'))
 C.save_json(rec, path)
 print('%s: final val mAP@0.5 %.4f%s' % (tag, rec['val_map50'],
       '  eps=%.2f' % rec['epsilon_delta1e-5'] if a.dp else ''))
