@@ -77,3 +77,16 @@ logged in `restart/NEGATIVE_RESULTS.md`.
   re-selected (the user scheduled learning-rate changes for Step 5).
 * Reported: noise level / mAP / epsilon tables for central B=1,024 (Step 1),
   central B=64, FL B=64; whether noise-survivability changes. Descriptive, no gate.
+
+## Amendment 2 — 2026-10-06, user-directed Steps 3-4, before any Step 4 run
+
+* Step 3 (confirmed by the user): FedProx gradient mu*(w - w_global) is now added to
+  the already-privatized gradient between Opacus pre_step() (clip, sum, noise, scale)
+  and the SGD(momentum) update. Verified on fixed data with an identical noise draw:
+  (grad_mu - grad_0) - mu(w - w_g) = 2.4e-7 (float rounding) for the new code, vs a
+  100% relative error when the term is put inside the per-sample loss.
+* Step 4: mu in {0 (no-FedProx baseline), 0.01, 0.03, 0.1, 0.3, 1}, edge config
+  (FL, 8 clients, B=64, 20 local iterations/round, R=12, lr 0.03), at sigma = 0 and
+  sigma = 0.5 (the only sigma at B=64 where FL+DP still learns), 10 paired seeds.
+  Tags carry `_proxv2` so no pre-Step-3 run is reused. Reported per mu: mean mAP,
+  paired difference vs mu=0 with 95% CI and wins, epsilon. Descriptive, no gate.

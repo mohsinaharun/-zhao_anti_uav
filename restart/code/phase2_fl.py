@@ -111,12 +111,20 @@ for r in range(a.rounds):
                 if len(j) == 0:
                     continue
                 opt.zero_grad()
+                # (a) task loss ONLY -> per-sample gradients (Opacus hooks record them)
                 C.per_sample_loss(local(X[j].float()), *[y[j] for y in Y]).mean().backward()
-                opt.step(); steps[c] += 1
+                # (b) privatize: clip each per-sample gradient to C, sum, add N(0, sigma^2 C^2),
+                #     divide by the expected batch size -> privatized gradient left in p.grad
+                if a.dp and not opt.pre_step():
+                    continue
+                # (c) FedProx gradient mu*(w - w_global) added to the ALREADY-privatized
+                #     gradient: data-independent, so never clipped, never noised, no privacy cost
                 if a.mu > 0:
                     with torch.no_grad():
                         for p, g in zip(params, gparams):
-                            p.sub_(a.lr * a.mu * (p - g))
+                            p.grad.add_(a.mu * (p - g))
+                # (d) one SGD(momentum) update on (privatized task gradient + prox gradient)
+                (opt.original_optimizer if a.dp else opt).step(); steps[c] += 1
                 GUARD.tick()
         new[c] = {k: v.detach() for k, v in (local._module if a.dp else local).state_dict().items()}
     glob.load_state_dict({k: sum(new[c][k].float() * sizes[c] for c in clients) / tot for k in gstate})
