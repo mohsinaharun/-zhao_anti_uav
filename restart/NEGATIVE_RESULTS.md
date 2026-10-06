@@ -16,3 +16,13 @@ so the reported results can be read against everything that was tried.
   and (2) passed, (3) failed: the model collapses at the weakest noise level, so
   there is no live range. Remediation per pre-registration: B -> 1,024.
   Results: `restart/results/phase1/dp_K9_B256_*`, figure `phase1_noise_sweep_K9_B256`.
+* **2026-10-05 — causal 3-frame input (t-10, t-5, t) REJECTED (Amendment 2).**
+  Motivation: the single-frame model's top detection lands on static clutter in 24%
+  of drone frames (52% in terrain). Result, 3 paired seeds, val mAP@0.5:
+  non-DP S 0.584 vs T 0.456 (-0.128, worse in every seed); DP sigma=2 S 0.350 vs
+  T 0.096 (-0.255, worse in every seed). Both decision criteria failed -> keep S.
+  Likely cause: the FROZEN ImageNet backbone expects the three channels to be one
+  scene; three different instants degrade its features, and a tracking camera
+  misaligns the frames. This rejects this cheap motion trick with a frozen
+  backbone, not motion cues in general (that would need a trainable motion-aware
+  stem: more parameters, more DP noise, and out of the thesis's scope).

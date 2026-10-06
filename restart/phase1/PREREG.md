@@ -106,3 +106,8 @@ detection with score >= 0.3. Static clutter does not move; a drone does.
   B=1,024) so the canonical config's gate is re-established on the new input.
 * Descriptive (not a criterion): the error breakdown (hit / mislocated / wrong place
   / false alarm) for both variants.
+
+### Amendment 2 — outcome (2026-10-05)
+KEEP S. (a) non-DP T - S = -0.128 (needed >= +0.03); (b) DP sigma=2 T - S = -0.255
+(needed >= -0.02). Canonical Phase 1 config unchanged: single-frame input, K=9,
+B=1,024, C=45.8, lr=0.03. See restart/NEGATIVE_RESULTS.md.
