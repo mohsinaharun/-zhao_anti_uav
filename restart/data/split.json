@@ -1,0 +1,1390 @@
+{
+ "seed": 20261005,
+ "shares_target": {
+  "test": 0.15,
+  "val": 0.1,
+  "root": 0.05,
+  "proxy": 0.15,
+  "clients": 0.55
+ },
+ "code_commit": "1c7f50d",
+ "note": "session-disjoint pools; stratified by dominant environment (proposed labels)",
+ "pools": {
+  "test": {
+   "20190925_205804": {
+    "dominant_env": "sky",
+    "target_frames": 1801,
+    "folders": [
+     {
+      "folder": "20190925_205804_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_205804_1_6",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_095902": {
+    "dominant_env": "sky",
+    "target_frames": 1751,
+    "folders": [
+     {
+      "folder": "20190926_095902_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_095902_1_3",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_103046": {
+    "dominant_env": "sky",
+    "target_frames": 4506,
+    "folders": [
+     {
+      "folder": "20190926_103046_1_4",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_103046_1_1",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190926_103046_1_5",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190926_103046_1_7",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190926_103046_1_8",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190926_144550": {
+    "dominant_env": "building",
+    "target_frames": 2000,
+    "folders": [
+     {
+      "folder": "20190926_144550_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_144550_1_2",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "3700000000002_091121": {
+    "dominant_env": "building",
+    "target_frames": 1375,
+    "folders": [
+     {
+      "folder": "3700000000002_091121_1",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "3700000000002_095542": {
+    "dominant_env": "terrain",
+    "target_frames": 1498,
+    "folders": [
+     {
+      "folder": "3700000000002_095542_1",
+      "official_split": "train"
+     }
+    ]
+   },
+   "3700000000002_105103": {
+    "dominant_env": "terrain",
+    "target_frames": 4308,
+    "folders": [
+     {
+      "folder": "3700000000002_105103_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "3700000000002_105103_6",
+      "official_split": "validation"
+     },
+     {
+      "folder": "3700000000002_105103_8",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "3700000000003_104005": {
+    "dominant_env": "cloud",
+    "target_frames": 1396,
+    "folders": [
+     {
+      "folder": "3700000000003_104005_1",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_020": {
+    "dominant_env": "sky",
+    "target_frames": 4494,
+    "folders": [
+     {
+      "folder": "wg2022_ir_020_split_01",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_020_split_05",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_020_split_07",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_020_split_03",
+      "official_split": "validation"
+     },
+     {
+      "folder": "wg2022_ir_020_split_08",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "wg2022_ir_047": {
+    "dominant_env": "sky",
+    "target_frames": 4042,
+    "folders": [
+     {
+      "folder": "wg2022_ir_047_split_01",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_047_split_02",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_047_split_04",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_049": {
+    "dominant_env": "terrain",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "wg2022_ir_049_split_02",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "wg2022_ir_053": {
+    "dominant_env": "cloud",
+    "target_frames": 2767,
+    "folders": [
+     {
+      "folder": "wg2022_ir_053_split_04",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_053_split_06",
+      "official_split": "train"
+     }
+    ]
+   }
+  },
+  "val": {
+   "20190925_111757": {
+    "dominant_env": "sky",
+    "target_frames": 5821,
+    "folders": [
+     {
+      "folder": "20190925_111757_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_111757_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_111757_1_6",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_111757_1_7",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_111757_1_8",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_111757_1_9",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190925_140917": {
+    "dominant_env": "building",
+    "target_frames": 5403,
+    "folders": [
+     {
+      "folder": "20190925_140917_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_140917_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_140917_1_6",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_140917_1_7",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_140917_1_8",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_140917_1_3",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_193610": {
+    "dominant_env": "sky",
+    "target_frames": 5420,
+    "folders": [
+     {
+      "folder": "20190925_193610_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_193610_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_193610_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_193610_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_193610_1_8",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_193610_1_9",
+      "official_split": "train"
+     }
+    ]
+   },
+   "3700000000002_105837": {
+    "dominant_env": "terrain",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "3700000000002_105837_2",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_012": {
+    "dominant_env": "cloud",
+    "target_frames": 3682,
+    "folders": [
+     {
+      "folder": "wg2022_ir_012_split_06",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_012_split_08",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_012_split_09",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_028": {
+    "dominant_env": "terrain",
+    "target_frames": 4197,
+    "folders": [
+     {
+      "folder": "wg2022_ir_028_split_04",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_028_split_13",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_028_split_09",
+      "official_split": "validation"
+     }
+    ]
+   }
+  },
+  "root": {
+   "20190925_124612": {
+    "dominant_env": "sky",
+    "target_frames": 4928,
+    "folders": [
+     {
+      "folder": "20190925_124612_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_124612_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_124612_1_3",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190925_124612_1_4",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190925_124612_1_7",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "wg2022_ir_048": {
+    "dominant_env": "terrain",
+    "target_frames": 650,
+    "folders": [
+     {
+      "folder": "wg2022_ir_048_split_03",
+      "official_split": "validation"
+     }
+    ]
+   }
+  },
+  "proxy": {
+   "01_2192": {
+    "dominant_env": "cloud",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "01_2192_0001-1500",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "01_4485": {
+    "dominant_env": "terrain",
+    "target_frames": 2301,
+    "folders": [
+     {
+      "folder": "01_4485_1167-2666",
+      "official_split": "train"
+     },
+     {
+      "folder": "01_4485_2985-4484",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_131530": {
+    "dominant_env": "building",
+    "target_frames": 2922,
+    "folders": [
+     {
+      "folder": "20190925_131530_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_131530_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_131530_1_7",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190925_194211": {
+    "dominant_env": "sky",
+    "target_frames": 4329,
+    "folders": [
+     {
+      "folder": "20190925_194211_1_4",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_194211_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_194211_1_6",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_194211_1_8",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_194211_1_2",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_222534": {
+    "dominant_env": "sky",
+    "target_frames": 4951,
+    "folders": [
+     {
+      "folder": "20190925_222534_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_222534_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_222534_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_222534_1_7",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_222534_1_4",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190926_111509": {
+    "dominant_env": "sky",
+    "target_frames": 5119,
+    "folders": [
+     {
+      "folder": "20190926_111509_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_111509_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_111509_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_111509_1_6",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_111509_1_7",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_111509_1_9",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_183400": {
+    "dominant_env": "sky",
+    "target_frames": 3284,
+    "folders": [
+     {
+      "folder": "20190926_183400_1_7",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_183400_1_8",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_183400_1_9",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_183400_1_3",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "3700000000002_143252": {
+    "dominant_env": "terrain",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "3700000000002_143252_1",
+      "official_split": "train"
+     }
+    ]
+   },
+   "3700000000002_153918": {
+    "dominant_env": "terrain",
+    "target_frames": 1195,
+    "folders": [
+     {
+      "folder": "3700000000002_153918_1",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_022": {
+    "dominant_env": "cloud",
+    "target_frames": 4387,
+    "folders": [
+     {
+      "folder": "wg2022_ir_022_split_02",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_022_split_07",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_022_split_10",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_031": {
+    "dominant_env": "terrain",
+    "target_frames": 2762,
+    "folders": [
+     {
+      "folder": "wg2022_ir_031_split_09",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_031_split_10",
+      "official_split": "train"
+     }
+    ]
+   }
+  },
+  "clients": {
+   "01_1751": {
+    "dominant_env": "sky",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "01_1751_0250-1750",
+      "official_split": "train"
+     }
+    ]
+   },
+   "02_1610": {
+    "dominant_env": "cloud",
+    "target_frames": 1469,
+    "folders": [
+     {
+      "folder": "02_1610_0001_1500",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "02_6321": {
+    "dominant_env": "building",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "02_6321_0274-2773",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "04_8618": {
+    "dominant_env": "terrain",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "04_8618_1215-2714",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190925_101846": {
+    "dominant_env": "sky",
+    "target_frames": 2791,
+    "folders": [
+     {
+      "folder": "20190925_101846_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_101846_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_101846_1_1",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_124000": {
+    "dominant_env": "building",
+    "target_frames": 3000,
+    "folders": [
+     {
+      "folder": "20190925_124000_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_124000_1_4",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190925_124000_1_9",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_130434": {
+    "dominant_env": "sky",
+    "target_frames": 1923,
+    "folders": [
+     {
+      "folder": "20190925_130434_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_130434_1_4",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190925_133630": {
+    "dominant_env": "cloud",
+    "target_frames": 2000,
+    "folders": [
+     {
+      "folder": "20190925_133630_1_1",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190925_133630_1_8",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_134301": {
+    "dominant_env": "sky",
+    "target_frames": 2604,
+    "folders": [
+     {
+      "folder": "20190925_134301_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_134301_1_7",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_134301_1_9",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190925_141417": {
+    "dominant_env": "building",
+    "target_frames": 5000,
+    "folders": [
+     {
+      "folder": "20190925_141417_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_141417_1_7",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_141417_1_2",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190925_141417_1_3",
+      "official_split": "validation"
+     },
+     {
+      "folder": "20190925_141417_1_4",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_143900": {
+    "dominant_env": "sky",
+    "target_frames": 3980,
+    "folders": [
+     {
+      "folder": "20190925_143900_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_143900_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_143900_1_6",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_143900_1_4",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_152412": {
+    "dominant_env": "sky",
+    "target_frames": 994,
+    "folders": [
+     {
+      "folder": "20190925_152412_1_2",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190925_183946": {
+    "dominant_env": "sky",
+    "target_frames": 2327,
+    "folders": [
+     {
+      "folder": "20190925_183946_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_183946_1_7",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_183946_1_8",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190925_200320": {
+    "dominant_env": "sky",
+    "target_frames": 3630,
+    "folders": [
+     {
+      "folder": "20190925_200320_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_200320_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_200320_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_200320_1_6",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190925_200805": {
+    "dominant_env": "building",
+    "target_frames": 1855,
+    "folders": [
+     {
+      "folder": "20190925_200805_1_8",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_200805_1_7",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_210802": {
+    "dominant_env": "sky",
+    "target_frames": 2709,
+    "folders": [
+     {
+      "folder": "20190925_210802_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_210802_1_4",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_210802_1_3",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190925_213001": {
+    "dominant_env": "sky",
+    "target_frames": 3562,
+    "folders": [
+     {
+      "folder": "20190925_213001_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_213001_1_4",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_213001_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190925_213001_1_6",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_102042": {
+    "dominant_env": "sky",
+    "target_frames": 2429,
+    "folders": [
+     {
+      "folder": "20190926_102042_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_102042_1_6",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_102042_1_9",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190926_130341": {
+    "dominant_env": "building",
+    "target_frames": 28,
+    "folders": [
+     {
+      "folder": "20190926_130341_1_8",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_133516": {
+    "dominant_env": "sky",
+    "target_frames": 2000,
+    "folders": [
+     {
+      "folder": "20190926_133516_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_133516_1_8",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_134054": {
+    "dominant_env": "sky",
+    "target_frames": 1000,
+    "folders": [
+     {
+      "folder": "20190926_134054_1_2",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190926_141816": {
+    "dominant_env": "sky",
+    "target_frames": 3963,
+    "folders": [
+     {
+      "folder": "20190926_141816_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_141816_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_141816_1_9",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_141816_1_4",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190926_142435": {
+    "dominant_env": "building",
+    "target_frames": 1000,
+    "folders": [
+     {
+      "folder": "20190926_142435_1_6",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_143632": {
+    "dominant_env": "sky",
+    "target_frames": 2992,
+    "folders": [
+     {
+      "folder": "20190926_143632_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_143632_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_143632_1_7",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_183941": {
+    "dominant_env": "sky",
+    "target_frames": 3108,
+    "folders": [
+     {
+      "folder": "20190926_183941_1_1",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_183941_1_2",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_183941_1_5",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_183941_1_9",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "20190926_193515": {
+    "dominant_env": "sky",
+    "target_frames": 919,
+    "folders": [
+     {
+      "folder": "20190926_193515_1_8",
+      "official_split": "train"
+     }
+    ]
+   },
+   "20190926_200510": {
+    "dominant_env": "sky",
+    "target_frames": 3000,
+    "folders": [
+     {
+      "folder": "20190926_200510_1_3",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_200510_1_6",
+      "official_split": "train"
+     },
+     {
+      "folder": "20190926_200510_1_4",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "3700000000002_094948": {
+    "dominant_env": "terrain",
+    "target_frames": 1464,
+    "folders": [
+     {
+      "folder": "3700000000002_094948_1",
+      "official_split": "train"
+     }
+    ]
+   },
+   "3700000000002_101806": {
+    "dominant_env": "sky",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "3700000000002_101806_7",
+      "official_split": "train"
+     }
+    ]
+   },
+   "3700000000002_102004": {
+    "dominant_env": "sky",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "3700000000002_102004_3",
+      "official_split": "train"
+     }
+    ]
+   },
+   "3700000000002_104003": {
+    "dominant_env": "cloud",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "3700000000002_104003_1",
+      "official_split": "train"
+     }
+    ]
+   },
+   "3700000000002_104817": {
+    "dominant_env": "terrain",
+    "target_frames": 1159,
+    "folders": [
+     {
+      "folder": "3700000000002_104817_1",
+      "official_split": "train"
+     }
+    ]
+   },
+   "3700000000002_113556": {
+    "dominant_env": "terrain",
+    "target_frames": 967,
+    "folders": [
+     {
+      "folder": "3700000000002_113556_2",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "3700000000002_140908": {
+    "dominant_env": "terrain",
+    "target_frames": 1434,
+    "folders": [
+     {
+      "folder": "3700000000002_140908_1",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "3700000000003_101808": {
+    "dominant_env": "sky",
+    "target_frames": 1466,
+    "folders": [
+     {
+      "folder": "3700000000003_101808_1",
+      "official_split": "train"
+     }
+    ]
+   },
+   "new2": {
+    "dominant_env": "building",
+    "target_frames": 850,
+    "folders": [
+     {
+      "folder": "new2_train",
+      "official_split": "train"
+     }
+    ]
+   },
+   "new21": {
+    "dominant_env": "terrain",
+    "target_frames": 1491,
+    "folders": [
+     {
+      "folder": "new21_train_newfix",
+      "official_split": "train"
+     }
+    ]
+   },
+   "new27": {
+    "dominant_env": "building",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "new27_train-new",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "new37": {
+    "dominant_env": "sky",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "new37_train-new",
+      "official_split": "train"
+     }
+    ]
+   },
+   "new38": {
+    "dominant_env": "building",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "new38_train-new",
+      "official_split": "train"
+     }
+    ]
+   },
+   "new39": {
+    "dominant_env": "building",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "new39_train-new",
+      "official_split": "train"
+     }
+    ]
+   },
+   "new8": {
+    "dominant_env": "sky",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "new8_train-new",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "wg2022_ir_010": {
+    "dominant_env": "terrain",
+    "target_frames": 1429,
+    "folders": [
+     {
+      "folder": "wg2022_ir_010_split_01",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_011": {
+    "dominant_env": "terrain",
+    "target_frames": 2702,
+    "folders": [
+     {
+      "folder": "wg2022_ir_011_split_02",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_011_split_03",
+      "official_split": "validation"
+     },
+     {
+      "folder": "wg2022_ir_011_split_07",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "wg2022_ir_013": {
+    "dominant_env": "building",
+    "target_frames": 1488,
+    "folders": [
+     {
+      "folder": "wg2022_ir_013_split_01",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_015": {
+    "dominant_env": "sky",
+    "target_frames": 1314,
+    "folders": [
+     {
+      "folder": "wg2022_ir_015_split_01",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "wg2022_ir_018": {
+    "dominant_env": "terrain",
+    "target_frames": 632,
+    "folders": [
+     {
+      "folder": "wg2022_ir_018_split_02",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_021": {
+    "dominant_env": "sky",
+    "target_frames": 4357,
+    "folders": [
+     {
+      "folder": "wg2022_ir_021_split_03",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_021_split_05",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_021_split_07",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_024": {
+    "dominant_env": "terrain",
+    "target_frames": 2993,
+    "folders": [
+     {
+      "folder": "wg2022_ir_024_split_03",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_024_split_06",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_026": {
+    "dominant_env": "terrain",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "wg2022_ir_026_split_03",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "wg2022_ir_032": {
+    "dominant_env": "terrain",
+    "target_frames": 1422,
+    "folders": [
+     {
+      "folder": "wg2022_ir_032_split_05",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_034": {
+    "dominant_env": "sky",
+    "target_frames": 728,
+    "folders": [
+     {
+      "folder": "wg2022_ir_034_split_01",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_036": {
+    "dominant_env": "terrain",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "wg2022_ir_036_split_01",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_037": {
+    "dominant_env": "terrain",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "wg2022_ir_037_split_02",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_040": {
+    "dominant_env": "cloud",
+    "target_frames": 4010,
+    "folders": [
+     {
+      "folder": "wg2022_ir_040_split_04",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_040_split_02",
+      "official_split": "validation"
+     },
+     {
+      "folder": "wg2022_ir_040_split_05",
+      "official_split": "validation"
+     }
+    ]
+   },
+   "wg2022_ir_041": {
+    "dominant_env": "terrain",
+    "target_frames": 4144,
+    "folders": [
+     {
+      "folder": "wg2022_ir_041_split_01",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_041_split_02",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_041_split_06",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_045": {
+    "dominant_env": "terrain",
+    "target_frames": 1500,
+    "folders": [
+     {
+      "folder": "wg2022_ir_045_split_02",
+      "official_split": "train"
+     }
+    ]
+   },
+   "wg2022_ir_052": {
+    "dominant_env": "cloud",
+    "target_frames": 4088,
+    "folders": [
+     {
+      "folder": "wg2022_ir_052_split_05",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_052_split_06",
+      "official_split": "train"
+     },
+     {
+      "folder": "wg2022_ir_052_split_08",
+      "official_split": "train"
+     }
+    ]
+   }
+  }
+ },
+ "target_frames_by_pool_env": {
+  "test": {
+   "building": 3375,
+   "cloud": 4163,
+   "sky": 16594,
+   "terrain": 7306
+  },
+  "val": {
+   "building": 5403,
+   "cloud": 3682,
+   "sky": 11241,
+   "terrain": 5697
+  },
+  "root": {
+   "building": 0,
+   "cloud": 0,
+   "sky": 4928,
+   "terrain": 650
+  },
+  "proxy": {
+   "building": 2922,
+   "cloud": 5887,
+   "sky": 17683,
+   "terrain": 7758
+  },
+  "clients": {
+   "building": 19221,
+   "cloud": 13067,
+   "sky": 59296,
+   "terrain": 27337
+  }
+ }
+}
