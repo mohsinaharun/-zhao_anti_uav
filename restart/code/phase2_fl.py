@@ -28,12 +28,18 @@ ap.add_argument('--local-epochs', type=int, default=1)
 ap.add_argument('--local-iters', type=int, default=0,
                 help='if > 0: exactly this many local steps per round (replaces --local-epochs)')
 ap.add_argument('--seed', type=int, default=0)
+ap.add_argument('--clip', choices=['fixed', 'adaptive'], default='fixed')
+ap.add_argument('--clip-pct', type=float, default=50.0, help='adaptive: percentile of proxy per-sample norms')
+ap.add_argument('--calib-n', type=int, default=512, help='adaptive: proxy frames per round')
+ap.add_argument('--print-config', action='store_true')
 ap.add_argument('--tag', default='')
 a = ap.parse_args()
 B = a.B or (256 if a.mode == 'fl' else 1024)
 tag = a.tag or '%s_%s_B%d_s%g_lr%g_mu%g_R%d%s_seed%d' % (
     a.mode, 'dp' if a.dp else 'nodp', B, a.sigma if a.dp else 0, a.lr, a.mu, a.rounds,
-    '_it%d' % a.local_iters if a.local_iters else '', a.seed)
+    ('_it%d' % a.local_iters if a.local_iters else '') + ('_clipA%g' % a.clip_pct if a.clip == 'adaptive' else ''), a.seed)
+if a.print_config:
+    print({**vars(a), 'B': B, 'tag': tag}); sys.exit(0)
 path = os.path.join(C.RESULTS, 'phase2', tag + '.json')
 if os.path.exists(path):
     print('exists, skipping:', path); sys.exit(0)
@@ -42,6 +48,9 @@ tr = torch.load(os.path.join(C.CACHE, 'K9_s5_clients.pt'), weights_only=False)
 va = torch.load(os.path.join(C.CACHE, 'K9_s5_val.pt'), weights_only=False)
 X = tr['feats'].to(C.DEV); Y = [tr[k].to(C.DEV) for k in ('obj', 'reg', 'cell', 'has')]
 Xva = va['feats'].to(C.DEV)
+if a.clip == 'adaptive':
+    px = torch.load(os.path.join(C.CACHE, 'K9_s5_proxy.pt'), weights_only=False)
+    Xp = px['feats'].to(C.DEV); Yp = [px[k].to(C.DEV) for k in ('obj', 'reg', 'cell', 'has')]
 
 if a.mode == 'fl':
     f2c = __import__('json').load(open(os.path.join(C.ROOT, 'restart', 'data', 'clients.json')))['folder_to_client']
@@ -74,6 +83,20 @@ for r in range(a.rounds):
     gstate = {k: v.detach().clone() for k, v in glob.state_dict().items()}
     gparams = [p.detach().clone() for p in glob.parameters()]
     new = {}
+    C_r = a.C
+    if a.clip == 'adaptive':
+        # Server-side, on PUBLIC proxy frames (never client data): zero privacy cost.
+        from opacus import GradSampleModule
+        gm = GradSampleModule(C.Net(9).to(C.DEV)); gm._module.load_state_dict(gstate)
+        cj = torch.randperm(Xp.shape[0], generator=torch.Generator().manual_seed(a.seed * 104729 + r))[:a.calib_n].to(C.DEV)
+        norms = []
+        for s0 in range(0, len(cj), 128):
+            jj = cj[s0:s0 + 128]; gm.zero_grad()
+            C.per_sample_loss(gm(Xp[jj].float()), *[y[jj] for y in Yp]).mean().backward()
+            norms.append(torch.cat([q.grad_sample.flatten(1) for q in gm.parameters()], 1).norm(dim=1))
+        C_r = float(torch.quantile(torch.cat(norms), a.clip_pct / 100.0))
+    rec.setdefault('clip_per_round', []).append(C_r)
+    rec.setdefault('client_grad_norms', []).append({})
     for ci, (c, idx) in enumerate(clients.items()):
         torch.manual_seed(a.seed * 1000003 + r * 1009 + ci)        # local stream: sampling + noise
         local = C.Net(9).to(C.DEV); local.load_state_dict(gstate)
@@ -84,7 +107,7 @@ for r in range(a.rounds):
                                              generator=torch.Generator().manual_seed(a.seed * 7919 + r * 31 + ci))
             local, opt, dl = PrivacyEngine(accountant='rdp').make_private(
                 module=local, optimizer=opt, data_loader=dl, noise_multiplier=a.sigma,
-                max_grad_norm=a.C, poisson_sampling=True)
+                max_grad_norm=C_r, poisson_sampling=True)
         params = list((local._module if a.dp else local).parameters())
         def epoch_batches(e):
             if a.dp:
@@ -106,6 +129,7 @@ for r in range(a.rounds):
                     yield j; n += 1
                 e += 1
 
+        _log = []
         if True:
             for j in all_batches():
                 if len(j) == 0:
@@ -115,6 +139,9 @@ for r in range(a.rounds):
                 C.per_sample_loss(local(X[j].float()), *[y[j] for y in Y]).mean().backward()
                 # (b) privatize: clip each per-sample gradient to C, sum, add N(0, sigma^2 C^2),
                 #     divide by the expected batch size -> privatized gradient left in p.grad
+                if a.dp:   # DIAGNOSTIC ONLY: pre-clip norms from private data, never transmitted
+                    _n = torch.cat([q.grad_sample.flatten(1) for q in params], 1).norm(dim=1)
+                    _log.append((float(_n.median()), float(torch.quantile(_n, 0.9)), float((_n > C_r).float().mean())))
                 if a.dp and not opt.pre_step():
                     continue
                 # (c) FedProx gradient mu*(w - w_global) added to the ALREADY-privatized
@@ -126,6 +153,10 @@ for r in range(a.rounds):
                 # (d) one SGD(momentum) update on (privatized task gradient + prox gradient)
                 (opt.original_optimizer if a.dp else opt).step(); steps[c] += 1
                 GUARD.tick()
+        if _log:
+            rec['client_grad_norms'][-1][c] = {'median': float(np.mean([x[0] for x in _log])),
+                                              'p90': float(np.mean([x[1] for x in _log])),
+                                              'frac_clipped': float(np.mean([x[2] for x in _log]))}
         new[c] = {k: v.detach() for k, v in (local._module if a.dp else local).state_dict().items()}
     glob.load_state_dict({k: sum(new[c][k].float() * sizes[c] for c in clients) / tot for k in gstate})
     rec['history'].append({'round': r + 1, 'val_map50': evaluate(glob), 'seconds': time.time() - t0})

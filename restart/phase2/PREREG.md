@@ -90,3 +90,29 @@ logged in `restart/NEGATIVE_RESULTS.md`.
   sigma = 0.5 (the only sigma at B=64 where FL+DP still learns), 10 paired seeds.
   Tags carry `_proxv2` so no pre-Step-3 run is reused. Reported per mu: mean mAP,
   paired difference vs mu=0 with 95% CI and wins, epsilon. Descriptive, no gate.
+
+## Amendment 3 — 2026-10-06, user-directed ADAPTIVE CLIPPING TEST, before any run
+
+Active config (printed by the runner): FL, 8 clients, B = 64, 20 local iterations
+per round, R = 12, lr 0.03, **mu = 0 (FedProx disabled)**, 10 paired seeds (0-9),
+sigma in {0, 0.5, ..., 4.0}, same session split. Step 5 (learning rate) skipped by
+the user; lr stays 0.03.
+
+* **Fixed** (baseline): C = 45.8 every round. All 90 baseline runs re-run with the
+  current code (identical except for added logging).
+* **Adaptive**: at the start of each round the SERVER computes per-sample gradient
+  norms of the current global model on 512 frames of the PUBLIC proxy pool (never
+  client data) and sets C_r = the 50th percentile (75th implemented, not run).
+  **Privacy cost of choosing C: zero** (proxy data only). Epsilon is unchanged,
+  since noise is sigma*C_r and the RDP accountant depends only on sigma, q, steps.
+  Caveat: proxy frames are a different distribution from any client's frames.
+* Logged: C_r per round; per round per client the median / p90 of PRE-clip per-
+  sample norms and the fraction of samples clipped. **These diagnostics are computed
+  from private data without noise; they are local logs only and would not be
+  transmitted in a deployment.**
+
+**Decision rule (user-specified, fixed now):** adaptive clipping is considered to
+help ONLY IF the 95% CI of (adaptive - fixed), paired over 10 seeds, lies entirely
+above zero at **2 or more sigma levels**, with that direction consistent across the
+10 seeds. Reported: per-sigma mAP / epsilon for both arms, paired difference with
+95% CI and win count, and the per-round C_r values vs the fixed 45.8.
