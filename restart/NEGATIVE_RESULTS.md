@@ -26,3 +26,13 @@ so the reported results can be read against everything that was tried.
   misaligns the frames. This rejects this cheap motion trick with a frozen
   backbone, not motion cues in general (that would need a trainable motion-aware
   stem: more parameters, more DP noise, and out of the thesis's scope).
+
+## Revision (2026-10-06)
+
+* **The fixed clip bound C = 45.8 was badly calibrated for most of training.** It was
+  measured (Phase 1 rule) as the median per-sample gradient norm of the UNTRAINED
+  model. After the first round, client gradient norms fall to a median of ~8-12, so
+  C = 45.8 clipped only 0.3-0.5% of samples while the noise (sigma * C) stayed sized
+  for norms ~5x larger. Every fixed-C DP result so far (Phase 1, Phase 2, revision
+  Steps 1-2, 4) carries this handicap; they are valid as reported for C = 45.8 but
+  understate what DP-FL can do with a calibrated C. Found by the adaptive clipping test.
