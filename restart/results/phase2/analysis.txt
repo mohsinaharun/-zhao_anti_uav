@@ -1,0 +1,22 @@
+============================================================================
+GATE G2: PASS   (selected: FL lr 0.03, FedProx mu 1, FL+DP lr 0.03)
+  FL+DP     mean 0.1450  sd 0.0699  (>= 0.10 ok)
+  FL no-DP  mean 0.4867  sd 0.0195  (>= 0.10 ok)
+  DP no-FL  mean 0.3349  sd 0.0339  (>= 0.10 ok)
+  neither   mean 0.5568  sd 0.0191  (>= 0.10 ok)
+============================================================================
+contrast (n=10 paired seeds)                     mean               95% CI   wins        p
+cost of FL (no DP)       FL no-DP - neither   -0.0701  [-0.0869, -0.0533]   0/10   0.0000
+cost of DP (no FL)       DP no-FL - neither   -0.2219  [-0.2501, -0.1938]   0/10   0.0000
+cost of DP inside FL     FL+DP - FL no-DP     -0.3417  [-0.3956, -0.2879]   0/10   0.0000
+interaction  (FL+DP-FL) - (DPnoFL-neither)    -0.1198  [-0.1775, -0.0621]   0/10   0.0011
+
+per-environment val mAP@0.5 (mean over seeds):
+  cell        building     cloud       sky   terrain
+  FL+DP          0.176     0.023     0.258     0.087
+  FL no-DP       0.722     0.354     0.692     0.202
+  DP no-FL       0.457     0.090     0.532     0.185
+  neither        0.793     0.426     0.752     0.219
+
+epsilon at delta=1e-5, sigma=2:  FL clients max 4.55 / median 2.98  (per client: {'c0': 3.36, 'c1': 3.53, 'c2': 3.9, 'c3': 4.55, 'c4': 1.73, 'c5': 1.73, 'c6': 2.61, 'c7': 2.45});  no-FL 1.69
+FedProx selection (FL no-DP, seed 0): {'0': 0.4713, '0.01': 0.4659, '0.1': 0.4677, '1': 0.4906}
