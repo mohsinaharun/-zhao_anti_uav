@@ -111,3 +111,12 @@ detection with score >= 0.3. Static clutter does not move; a drone does.
 KEEP S. (a) non-DP T - S = -0.128 (needed >= +0.03); (b) DP sigma=2 T - S = -0.255
 (needed >= -0.02). Canonical Phase 1 config unchanged: single-frame input, K=9,
 B=1,024, C=45.8, lr=0.03. See restart/NEGATIVE_RESULTS.md.
+
+## Amendment 3 — 2026-10-06, user-directed revision (Step 1), before any run
+
+Per the user's revision instructions: the noise test is replaced by a granular sweep
+**sigma in {0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0}** at the canonical config
+(central/single client, K=9, B=1,024, C=45.8, lr 0.03, 12 epochs), with **10 paired
+seeds (0-9)** per the user's 10-seed rule. Same train (clients pool) / val split.
+Existing identical runs (sigma 0, 2, 4; seeds 0-2) are reused. Reported: mean mAP,
+sd, 95% CI, and epsilon (delta = 1e-5) for every sigma. Descriptive — no gate.
