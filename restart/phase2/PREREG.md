@@ -116,3 +116,24 @@ help ONLY IF the 95% CI of (adaptive - fixed), paired over 10 seeds, lies entire
 above zero at **2 or more sigma levels**, with that direction consistent across the
 10 seeds. Reported: per-sigma mAP / epsilon for both arms, paired difference with
 95% CI and win count, and the per-round C_r values vs the fixed 45.8.
+
+## Amendment 4 — 2026-10-06, user-directed CONTROL (a), before any control run
+
+**Calibrated FIXED clip bound.** Per seed: from that seed's initial model, train
+2 rounds' worth of local steps (2 x 20 iterations, B = 64, SGD lr 0.03 momentum 0.9)
+on the PUBLIC proxy pool without noise; C* = median per-sample gradient norm on 512
+proxy frames. C* is set once and used for all 12 rounds and every sigma of that seed.
+Zero privacy cost (proxy only); depends on the seed only — not on sigma, not on any
+client data, not on any experimental result. Smoke test: C* = 6.05 / 5.67 / 6.73
+(seeds 0-2).
+
+Compared against the existing ADAPTIVE (per-round proxy p50) runs: same sigma
+sweep {0, 0.5, ..., 4}, same 10 paired seeds, everything else unchanged.
+
+**Decision rule (same as Amendment 3):** adaptive is considered better than the
+calibrated fixed bound ONLY IF the 95% CI of (adaptive - calibrated fixed) lies
+entirely above zero at 2 or more sigma levels, consistent across the 10 seeds.
+The reverse direction (CI entirely below zero) is reported too.
+Interpretation fixed in advance: if adaptive does NOT win against this baseline,
+the earlier gain is evidence that C = 45.8 was mis-calibrated, not evidence of
+useful per-round variation in gradient scale.
