@@ -73,3 +73,12 @@ are correlated, so per-recording protection is weaker than this epsilon suggests
 `restart/results/phase1/*.json`: config, code commit, machine, GPU, seeds, per-epoch
 val mAP, final val mAP, C, q, steps, epsilon. Figure: mAP@0.5 vs sigma with seed
 spread and epsilon on a secondary label row (one y-axis).
+
+## Amendment 1 — 2026-10-05, before any B=1024 run
+
+G1b failed on criterion (3) at K=9, B=256 (mAP 0.010 at sigma=2). Per the
+pre-registered remediation, B is raised to 1,024 (K is already at its maximum, 9).
+Interpretation made explicit: for each remediation configuration the DP learning
+rate is re-selected at sigma = 0 from {0.01, 0.03, 0.1} by val mAP (seed 0), exactly
+as for the first configuration. C stays 45.8 (it is a property of the model at
+init, not of B). Gate criteria unchanged.
