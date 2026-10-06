@@ -1,0 +1,19 @@
+sigma       mAP      sd             95% CI  epsilon    n
+        (FL client epsilon median inf, max inf)
+0        0.4917  0.0254  [0.4735, 0.5099]      inf   10
+        (FL client epsilon median 18.76, max 30.16)
+0.5      0.1739  0.0738  [0.1211, 0.2267]    30.16   10
+        (FL client epsilon median 3.14, max 5.73)
+1        0.0090  0.0103  [0.0017, 0.0164]     5.73   10
+        (FL client epsilon median 1.46, max 2.80)
+1.5      0.0003  0.0008  [-0.0002, 0.0009]     2.80   10
+        (FL client epsilon median 0.97, max 1.86)
+2        0.0000  0.0000  [-0.0000, 0.0000]     1.86   10
+        (FL client epsilon median 0.72, max 1.39)
+2.5      0.0000  0.0000  [-0.0000, 0.0000]     1.39   10
+        (FL client epsilon median 0.58, max 1.11)
+3        0.0000  0.0000  [-0.0000, 0.0000]     1.11   10
+        (FL client epsilon median 0.48, max 0.93)
+3.5      0.0000  0.0000  [-0.0000, 0.0000]     0.93   10
+        (FL client epsilon median 0.41, max 0.79)
+4        0.0000  0.0000  [-0.0000, 0.0000]     0.79   10

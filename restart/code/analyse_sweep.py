@@ -23,7 +23,11 @@ for s in a.sigmas:
         if os.path.exists(f):
             rs.append(json.load(open(f)))
     m = np.array([r['val_map50'] for r in rs])
-    eps = rs[0].get('epsilon_delta1e-5', rs[0].get('epsilon_max')) if rs else None
+    eps = None
+    if rs:
+        eps = rs[0].get('epsilon_max', rs[0].get('epsilon_delta1e-5'))   # FL: worst client
+        if 'epsilon_median' in rs[0]:
+            print('        (FL client epsilon median %.2f, max %.2f)' % (rs[0]['epsilon_median'], rs[0]['epsilon_max']))
     h = stats.t.ppf(0.975, len(m) - 1) * m.std(ddof=1) / np.sqrt(len(m)) if len(m) > 1 else float('nan')
     rows.append((s, m.mean(), m.std(ddof=1) if len(m) > 1 else 0, h, eps, len(m), m))
     print('%-6g %8.4f %7.4f  [%6.4f, %6.4f] %8s %4d' % (s, m.mean(), rows[-1][2], m.mean() - h, m.mean() + h,
