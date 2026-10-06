@@ -61,3 +61,19 @@ If FL+DP fails: (1) B_c -> 512, (2) R -> 24 rounds of E = 1/2 epoch; each attemp
 logged in `restart/NEGATIVE_RESULTS.md`.
 
 `test` is still untouched; all numbers are on `val`.
+
+## Amendment 1 — 2026-10-06, user-directed revision Step 2 (edge batch size), before any run
+
+* Batch size **B = 64** (chosen over 32: an edge board holds 64 frames' activations
+  easily, while DP noise on the mean gradient is sigma*C/B, so 32 would double the
+  relative noise for no real memory need). DP clipping (C = 45.8, per sample) and
+  Gaussian noise are applied per Poisson batch of expected size 64.
+* FL: **20 local iterations per round** (fixed number of local DP-SGD steps; top of
+  the user's 15-20 range), R = 12 rounds, FedProx mu = 1, lr 0.03 — all else as in
+  Phase 2. Epsilon per client from q_c = 64/N_c and 240 steps.
+* Central (for an apples-to-apples comparison with Step 1): same as Step 1 but
+  B = 64 (12 epochs).
+* Sweep: sigma in {0, 0.5, ..., 4.0}, 10 paired seeds, both settings. lr is NOT
+  re-selected (the user scheduled learning-rate changes for Step 5).
+* Reported: noise level / mAP / epsilon tables for central B=1,024 (Step 1),
+  central B=64, FL B=64; whether noise-survivability changes. Descriptive, no gate.

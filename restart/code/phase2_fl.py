@@ -25,12 +25,15 @@ ap.add_argument('--lr', type=float, default=0.03)
 ap.add_argument('--mu', type=float, default=0.0)
 ap.add_argument('--rounds', type=int, default=12)
 ap.add_argument('--local-epochs', type=int, default=1)
+ap.add_argument('--local-iters', type=int, default=0,
+                help='if > 0: exactly this many local steps per round (replaces --local-epochs)')
 ap.add_argument('--seed', type=int, default=0)
 ap.add_argument('--tag', default='')
 a = ap.parse_args()
 B = a.B or (256 if a.mode == 'fl' else 1024)
-tag = a.tag or '%s_%s_B%d_s%g_lr%g_mu%g_R%d_seed%d' % (
-    a.mode, 'dp' if a.dp else 'nodp', B, a.sigma if a.dp else 0, a.lr, a.mu, a.rounds, a.seed)
+tag = a.tag or '%s_%s_B%d_s%g_lr%g_mu%g_R%d%s_seed%d' % (
+    a.mode, 'dp' if a.dp else 'nodp', B, a.sigma if a.dp else 0, a.lr, a.mu, a.rounds,
+    '_it%d' % a.local_iters if a.local_iters else '', a.seed)
 path = os.path.join(C.RESULTS, 'phase2', tag + '.json')
 if os.path.exists(path):
     print('exists, skipping:', path); sys.exit(0)
@@ -83,14 +86,28 @@ for r in range(a.rounds):
                 module=local, optimizer=opt, data_loader=dl, noise_multiplier=a.sigma,
                 max_grad_norm=a.C, poisson_sampling=True)
         params = list((local._module if a.dp else local).parameters())
-        for e in range(a.local_epochs):
+        def epoch_batches(e):
             if a.dp:
-                batches = (idx[b[0].to(C.DEV)] for b in dl)
-            else:
-                perm = idx[torch.randperm(len(idx), generator=torch.Generator().manual_seed(
-                    a.seed * 1000 + r * 10 + e + ci * 100000)).to(C.DEV)]
-                batches = (perm[s:s + B] for s in range(0, len(idx), B))
-            for j in batches:
+                return (idx[b[0].to(C.DEV)] for b in dl)
+            perm = idx[torch.randperm(len(idx), generator=torch.Generator().manual_seed(
+                a.seed * 1000 + r * 10 + e + ci * 100000)).to(C.DEV)]
+            return (perm[s:s + B] for s in range(0, len(idx), B))
+
+        def all_batches():
+            if not a.local_iters:                 # full local epochs
+                for e in range(a.local_epochs):
+                    yield from epoch_batches(e)
+                return
+            n, e = 0, 0                           # exactly local_iters steps, cycling epochs
+            while True:
+                for j in epoch_batches(e):
+                    if n == a.local_iters:
+                        return
+                    yield j; n += 1
+                e += 1
+
+        if True:
+            for j in all_batches():
                 if len(j) == 0:
                     continue
                 opt.zero_grad()
