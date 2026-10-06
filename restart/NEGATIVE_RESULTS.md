@@ -36,3 +36,11 @@ so the reported results can be read against everything that was tried.
   for norms ~5x larger. Every fixed-C DP result so far (Phase 1, Phase 2, revision
   Steps 1-2, 4) carries this handicap; they are valid as reported for C = 45.8 but
   understate what DP-FL can do with a calibrated C. Found by the adaptive clipping test.
+* **2026-10-06 — Adaptive per-round clipping does NOT beat a calibrated fixed bound
+  (control (a), pre-registered).** Against fixed C* (proxy median after 2 proxy rounds,
+  set once; mean 5.15 over seeds), adaptive wins at 0 sigma levels and LOSES at 6
+  (sigma 1.5-4, CIs entirely below zero, e.g. sigma 2: -0.112 [-0.169, -0.055], 2/10).
+  The earlier adaptive-vs-45.8 gain was a calibration effect. Adaptive's per-round bound
+  starts at the untrained model's norms (C = 55 in round 1, 13-36 in round 2) — too
+  large, so early rounds are over-noised — and only settles at ~5-6 from round 3, where
+  it stays flat. No evidence of useful per-round variation in gradient scale.
