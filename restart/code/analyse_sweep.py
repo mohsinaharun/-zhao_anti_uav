@@ -36,7 +36,7 @@ xs = np.arange(len(rows))
 for x, r in zip(xs, rows):
     ax.scatter([x] * len(r[6]), r[6], color='#2a78d6', alpha=0.35, s=12, lw=0)
 ax.errorbar(xs, [r[1] for r in rows], yerr=[r[3] for r in rows], color='#2a78d6', lw=2, marker='o', ms=6, capsize=3,
-            label='mean, 95% CI (%d seeds)' % a.seeds)
+            label='mean, 95%% CI (%d seeds)' % a.seeds)
 ax.set_xticks(xs); ax.set_xticklabels(['σ=%g\nε=%s' % (r[0], '∞' if r[4] in (None, float('inf')) else '%.2g' % r[4]) for r in rows], fontsize=8)
 ax.set_ylabel('val mAP@0.5'); ax.set_ylim(0, 0.7); ax.grid(axis='y', color='#e4e3df')
 for sp in ('top', 'right'):

@@ -1,0 +1,97 @@
+{
+ "config": {
+  "K": 9,
+  "step": 5,
+  "lr": 0.03,
+  "seed": 9,
+  "epochs": 12,
+  "batch": 64,
+  "dp": true,
+  "sigma": 0.0,
+  "C": 45.8,
+  "B": 1024,
+  "input": "single",
+  "trivial": false,
+  "measure_C": false,
+  "tag": "",
+  "save_model": false
+ },
+ "meta": {
+  "code_commit": "f2ff09b",
+  "code_dirty": false,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-06 02:00:53"
+ },
+ "n_train": 25146,
+ "n_val": 5487,
+ "trainable_params": 65221,
+ "sample_rate": 0.04072218245446592,
+ "history": [
+  {
+   "epoch": 1,
+   "val_map50": 0.2477813718845786,
+   "seconds": 3.089071750640869
+  },
+  {
+   "epoch": 2,
+   "val_map50": 0.4629311791907262,
+   "seconds": 5.436848878860474
+  },
+  {
+   "epoch": 3,
+   "val_map50": 0.4992195492681002,
+   "seconds": 7.8387603759765625
+  },
+  {
+   "epoch": 4,
+   "val_map50": 0.47323609564053337,
+   "seconds": 10.170148849487305
+  },
+  {
+   "epoch": 5,
+   "val_map50": 0.5426390755818844,
+   "seconds": 12.56152629852295
+  },
+  {
+   "epoch": 6,
+   "val_map50": 0.5194747999500571,
+   "seconds": 14.887475967407227
+  },
+  {
+   "epoch": 7,
+   "val_map50": 0.5322734079528373,
+   "seconds": 17.304649591445923
+  },
+  {
+   "epoch": 8,
+   "val_map50": 0.5612357839371163,
+   "seconds": 19.63279676437378
+  },
+  {
+   "epoch": 9,
+   "val_map50": 0.55982991963355,
+   "seconds": 22.02483320236206
+  },
+  {
+   "epoch": 10,
+   "val_map50": 0.5531528266438481,
+   "seconds": 24.342856645584106
+  },
+  {
+   "epoch": 11,
+   "val_map50": 0.5547637437654908,
+   "seconds": 26.74187469482422
+  },
+  {
+   "epoch": 12,
+   "val_map50": 0.5776678032672049,
+   "seconds": 29.064889669418335
+  }
+ ],
+ "val_map50": 0.5776678032672049,
+ "steps": 300,
+ "seconds": 29.064889669418335,
+ "epsilon_delta1e-5": Infinity
+}
