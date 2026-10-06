@@ -32,24 +32,40 @@ ap.add_argument('--clip', choices=['fixed', 'adaptive', 'calibrated'], default='
 ap.add_argument('--clip-pct', type=float, default=50.0, help='adaptive: percentile of proxy per-sample norms')
 ap.add_argument('--calib-n', type=int, default=512, help='adaptive: proxy frames per round')
 ap.add_argument('--print-config', action='store_true')
+ap.add_argument('--K', type=int, default=9, help='first trainable MobileNet block (9 = head only)')
+ap.add_argument('--pulse-round', type=int, default=0, help='Phase 3: 1-based round whose sigma is multiplied')
+ap.add_argument('--pulse-mult', type=float, default=2.0)
+ap.add_argument('--outdir', default='phase2', help='results subfolder (phase3 for the pulse test)')
 ap.add_argument('--tag', default='')
 a = ap.parse_args()
 B = a.B or (256 if a.mode == 'fl' else 1024)
+# Per-sample gradient engine. K = 9 (head only): Opacus hooks (verified exact, Phase 1).
+# K < 9: the MobileNet blocks reuse inputs (squeeze-excitation, residual), which Opacus
+# hooks reject; expanded weights ('ew') is used instead, verified exact against
+# single-sample backprop to 4.8e-7 (TF32 off) on 2026-10-06.
+GS_MODE = 'hooks' if a.K == 9 else 'ew'
+def GSM(m):
+    if GS_MODE == 'hooks':
+        from opacus import GradSampleModule
+        return GradSampleModule(m)
+    from opacus.grad_sample import GradSampleModuleExpandedWeights
+    return GradSampleModuleExpandedWeights(m, batch_first=True, loss_reduction='mean')
 tag = a.tag or '%s_%s_B%d_s%g_lr%g_mu%g_R%d%s_seed%d' % (
     a.mode, 'dp' if a.dp else 'nodp', B, a.sigma if a.dp else 0, a.lr, a.mu, a.rounds,
-    ('_it%d' % a.local_iters if a.local_iters else '') + ('_clipA%g' % a.clip_pct if a.clip == 'adaptive' else '_clipCal' if a.clip == 'calibrated' else ''), a.seed)
+    ('_it%d' % a.local_iters if a.local_iters else '') + ('_clipA%g' % a.clip_pct if a.clip == 'adaptive' else '_clipCal' if a.clip == 'calibrated' else '')
+    + ('_K%d' % a.K if a.K != 9 else '') + ('_pk%d' % a.pulse_round if a.pulse_round else ''), a.seed)
 if a.print_config:
     print({**vars(a), 'B': B, 'tag': tag}); sys.exit(0)
-path = os.path.join(C.RESULTS, 'phase2', tag + '.json')
+path = os.path.join(C.RESULTS, a.outdir, tag + '.json')
 if os.path.exists(path):
     print('exists, skipping:', path); sys.exit(0)
 
-tr = torch.load(os.path.join(C.CACHE, 'K9_s5_clients.pt'), weights_only=False)
-va = torch.load(os.path.join(C.CACHE, 'K9_s5_val.pt'), weights_only=False)
+tr = torch.load(os.path.join(C.CACHE, 'K%d_s5_clients.pt' % a.K), weights_only=False)
+va = torch.load(os.path.join(C.CACHE, 'K%d_s5_val.pt' % a.K), weights_only=False)
 X = tr['feats'].to(C.DEV); Y = [tr[k].to(C.DEV) for k in ('obj', 'reg', 'cell', 'has')]
 Xva = va['feats'].to(C.DEV)
 if a.clip in ('adaptive', 'calibrated'):
-    px = torch.load(os.path.join(C.CACHE, 'K9_s5_proxy.pt'), weights_only=False)
+    px = torch.load(os.path.join(C.CACHE, 'K%d_s5_proxy.pt' % a.K), weights_only=False)
     Xp = px['feats'].to(C.DEV); Yp = [px[k].to(C.DEV) for k in ('obj', 'reg', 'cell', 'has')]
 
 if a.mode == 'fl':
@@ -75,7 +91,7 @@ def evaluate(m, idx=None):
 
 
 torch.manual_seed(a.seed)
-glob = C.Net(9).to(C.DEV)
+glob = C.Net(a.K).to(C.DEV)
 rec = {'config': {**vars(a), 'B': B}, 'meta': C.meta(), 'client_sizes': sizes, 'history': []}
 C_star = None
 if a.clip == 'calibrated':
@@ -83,14 +99,13 @@ if a.clip == 'calibrated':
     # local steps (2 x local_iters, batch B, same SGD) on the PUBLIC proxy pool without noise,
     # then C* = proxy median per-sample grad norm. Set once; depends on the seed only (not on
     # sigma, not on any client data): zero privacy cost.
-    from opacus import GradSampleModule
-    cal = C.Net(9).to(C.DEV); cal.load_state_dict(glob.state_dict())
+    cal = C.Net(a.K).to(C.DEV); cal.load_state_dict(glob.state_dict())
     copt = torch.optim.SGD(cal.parameters(), lr=a.lr, momentum=0.9)
     cg = torch.Generator().manual_seed(a.seed * 15485863)
     for _ in range(2 * a.local_iters):
         jj = torch.randint(0, Xp.shape[0], (B,), generator=cg).to(C.DEV)
         copt.zero_grad(); C.per_sample_loss(cal(Xp[jj].float()), *[y[jj] for y in Yp]).mean().backward(); copt.step()
-    gm = GradSampleModule(C.Net(9).to(C.DEV)); gm._module.load_state_dict(cal.state_dict())
+    gm = GSM(C.Net(a.K).to(C.DEV)); gm._module.load_state_dict(cal.state_dict())
     cj = torch.randperm(Xp.shape[0], generator=torch.Generator().manual_seed(a.seed * 104729 + 999))[:a.calib_n].to(C.DEV)
     norms = []
     for s0 in range(0, len(cj), 128):
@@ -102,16 +117,18 @@ if a.clip == 'calibrated':
     torch.manual_seed(a.seed)   # restore the global stream so client training matches the other arms
 
 steps = {c: 0 for c in clients}
+acct = {c: [] for c in clients}          # per-round (sigma, steps) for the RDP accountant
 t0 = time.time()
 for r in range(a.rounds):
     gstate = {k: v.detach().clone() for k, v in glob.state_dict().items()}
     gparams = [p.detach().clone() for p in glob.parameters()]
     new = {}
     C_r = C_star if C_star is not None else a.C
+    sig_r = a.sigma * (a.pulse_mult if r + 1 == a.pulse_round else 1.0)
+    rec.setdefault('sigma_per_round', []).append(sig_r)
     if a.clip == 'adaptive':
         # Server-side, on PUBLIC proxy frames (never client data): zero privacy cost.
-        from opacus import GradSampleModule
-        gm = GradSampleModule(C.Net(9).to(C.DEV)); gm._module.load_state_dict(gstate)
+        gm = GSM(C.Net(a.K).to(C.DEV)); gm._module.load_state_dict(gstate)
         cj = torch.randperm(Xp.shape[0], generator=torch.Generator().manual_seed(a.seed * 104729 + r))[:a.calib_n].to(C.DEV)
         norms = []
         for s0 in range(0, len(cj), 128):
@@ -123,15 +140,15 @@ for r in range(a.rounds):
     rec.setdefault('client_grad_norms', []).append({})
     for ci, (c, idx) in enumerate(clients.items()):
         torch.manual_seed(a.seed * 1000003 + r * 1009 + ci)        # local stream: sampling + noise
-        local = C.Net(9).to(C.DEV); local.load_state_dict(gstate)
+        local = C.Net(a.K).to(C.DEV); local.load_state_dict(gstate)
         opt = torch.optim.SGD(local.parameters(), lr=a.lr, momentum=0.9)
         if a.dp:
             from opacus import PrivacyEngine
             dl = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(torch.arange(len(idx))), batch_size=B,
                                              generator=torch.Generator().manual_seed(a.seed * 7919 + r * 31 + ci))
             local, opt, dl = PrivacyEngine(accountant='rdp').make_private(
-                module=local, optimizer=opt, data_loader=dl, noise_multiplier=a.sigma,
-                max_grad_norm=C_r, poisson_sampling=True)
+                module=local, optimizer=opt, data_loader=dl, noise_multiplier=sig_r,
+                max_grad_norm=C_r, poisson_sampling=True, grad_sample_mode=GS_MODE)
         params = list((local._module if a.dp else local).parameters())
         def epoch_batches(e):
             if a.dp:
@@ -181,6 +198,7 @@ for r in range(a.rounds):
             rec['client_grad_norms'][-1][c] = {'median': float(np.mean([x[0] for x in _log])),
                                               'p90': float(np.mean([x[1] for x in _log])),
                                               'frac_clipped': float(np.mean([x[2] for x in _log]))}
+        acct[c].append((sig_r, steps[c] - sum(n for _, n in acct[c])))
         new[c] = {k: v.detach() for k, v in (local._module if a.dp else local).state_dict().items()}
     glob.load_state_dict({k: sum(new[c][k].float() * sizes[c] for c in clients) / tot for k in gstate})
     rec['history'].append({'round': r + 1, 'val_map50': evaluate(glob), 'seconds': time.time() - t0})
@@ -198,7 +216,7 @@ if a.dp:
     eps = {}
     for c in clients:
         acc = RDPAccountant()
-        acc.history = [(a.sigma, B / sizes[c], steps[c])]
+        acc.history = [(sg, B / sizes[c], n) for sg, n in acct[c] if n > 0]
         eps[c] = float(acc.get_epsilon(1e-5)) if a.sigma > 0 else float('inf')
     rec['epsilon_delta1e-5'] = eps
     rec['epsilon_max'] = max(eps.values()); rec['epsilon_median'] = float(np.median(list(eps.values())))

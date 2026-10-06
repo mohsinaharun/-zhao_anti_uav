@@ -121,11 +121,41 @@ class Head(nn.Module):
         return self.net(x)
 
 
+def fused_body(K):
+    """MobileNet blocks K..8 with every BatchNorm folded into its preceding conv
+    (eval-mode statistics). Identical function and pretrained weights, but no
+    BatchNorm left, so per-sample DP-SGD can train it (Phase 3 variant V3)."""
+    from torch.nn.utils.fusion import fuse_conv_bn_eval
+    from torchvision.ops.misc import Conv2dNormActivation
+    body = mobilenet()[K:CUT_MAX].eval()
+    for m in body.modules():
+        if isinstance(m, Conv2dNormActivation) and isinstance(m[1], nn.BatchNorm2d):
+            m[0] = fuse_conv_bn_eval(m[0], m[1])
+            m[0].bias.requires_grad_(True)   # fuse_conv_bn_eval leaves a new bias frozen
+            m[1] = nn.Identity()
+    import types
+    from torchvision.models.mobilenetv3 import InvertedResidual
+
+    def _fwd(self, x):                       # torchvision does `result += input` (in place)
+        out = self.block(x)
+        return out + x if self.use_res_connect else out
+    for m in body.modules():                 # Opacus hooks forbid in-place ops
+        if hasattr(m, 'inplace'):
+            m.inplace = False
+        if isinstance(m, InvertedResidual):
+            m.forward = types.MethodType(_fwd, m)
+    return body
+
+
+def body_channels_in(K):
+    return mobilenet()[:K](torch.zeros(1, 3, H, W)).shape[1]
+
+
 class Net(nn.Module):
-    """Trainable part: MobileNet blocks K..8 (empty for K = 9) + head."""
+    """Trainable part: MobileNet blocks K..8 (empty for K = 9; BatchNorm folded) + head."""
     def __init__(self, K):
         super().__init__()
-        self.body = mobilenet()[K:CUT_MAX] if K < CUT_MAX else nn.Identity()
+        self.body = fused_body(K) if K < CUT_MAX else nn.Identity()
         self.head = Head()
 
     def forward(self, f):

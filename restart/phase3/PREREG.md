@@ -47,3 +47,19 @@ the reader can apply one.
 V1 -> report -> V2 -> report -> V3 -> report -> combined verdict. Each reported
 separately with a plain-language summary. Then re-runs of Phase 1 / 2 / 4 with C*
 (pre-registered separately before they run).
+
+## Implementation notes — 2026-10-06, before any Phase 3 run (no design change)
+
+* Regression check: the modified runner reproduces a stored run exactly
+  (calibrated, sigma 1, seed 0: mAP 0.261688, eps 5.7326, identical).
+* V3 trainable parameter count is **116,365** (not ~115k): torch's
+  `fuse_conv_bn_eval` creates the folded bias with requires_grad=False; it is made
+  trainable, since it carries the folded BatchNorm shift.
+* V3 per-sample gradients use Opacus **expanded weights** (`ew`), because Opacus hooks
+  reject the blocks' input reuse (squeeze-excitation, residual). Verified against
+  exact single-sample backprop: relative error 4.8e-7 with TF32 off (2.3e-3 with the
+  default TF32, which applies equally to all runs); per-sample norms identical under
+  the mean loss. V1/V2 keep the hook engine verified in Phase 1. In-place ops in the
+  unfrozen blocks are made out-of-place (identical function: 4.7e-6).
+* Phase 3 results are written to `restart/results/phase3/`.
+* Measured cost: V1 ~26 s/run, V3 ~70 s/run, V2 ~55 s/run; total ~44 h.
