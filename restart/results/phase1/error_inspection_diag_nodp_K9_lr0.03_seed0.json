@@ -1,0 +1,38 @@
+{
+ "counts": {
+  "hit": 3469,
+  "mislocated": 479,
+  "wrong_place": 1258,
+  "false_alarm": 139,
+  "quiet_negative": 142
+ },
+ "by_env": {
+  "sky": {
+   "hit": 1798,
+   "quiet_negative": 53,
+   "false_alarm": 3,
+   "mislocated": 134,
+   "wrong_place": 318
+  },
+  "building": {
+   "mislocated": 37,
+   "quiet_negative": 1,
+   "wrong_place": 107,
+   "hit": 936
+  },
+  "terrain": {
+   "hit": 337,
+   "quiet_negative": 17,
+   "false_alarm": 43,
+   "mislocated": 211,
+   "wrong_place": 592
+  },
+  "cloud": {
+   "hit": 398,
+   "quiet_negative": 71,
+   "false_alarm": 93,
+   "mislocated": 97,
+   "wrong_place": 241
+  }
+ }
+}

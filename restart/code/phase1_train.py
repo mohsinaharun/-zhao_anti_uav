@@ -23,6 +23,7 @@ ap.add_argument('--dp', action='store_true')
 ap.add_argument('--sigma', type=float, default=0.0)
 ap.add_argument('--C', type=float, default=None, help='clipping norm (DP)')
 ap.add_argument('--B', type=int, default=256, help='DP expected (Poisson) batch size')
+ap.add_argument('--input', default='single', choices=['single', 'temporal'])
 ap.add_argument('--trivial', action='store_true')
 ap.add_argument('--measure-C', action='store_true')
 ap.add_argument('--tag', default='')
@@ -33,12 +34,15 @@ OUT = os.path.join(C.RESULTS, 'phase1')
 tag = a.tag or ('trivial' if a.trivial else 'measureC_K%d' % a.K if a.measure_C else
                 ('dp_K%d_B%d_C%g_s%g_lr%g_seed%d' % (a.K, a.B, a.C or 0, a.sigma, a.lr, a.seed)
                  if a.dp else 'nodp_K%d_lr%g_seed%d' % (a.K, a.lr, a.seed)))
+if a.input == 'temporal' and not a.tag:
+    tag += '_T'
 path = os.path.join(OUT, tag + '.json')
+SUF = '_T' if a.input == 'temporal' else ''
 if os.path.exists(path):
     print('exists, skipping:', path); sys.exit(0)
 
-tr = torch.load(os.path.join(C.CACHE, 'K%d_s%d_clients.pt' % (a.K, a.step)), weights_only=False)
-va = torch.load(os.path.join(C.CACHE, 'K%d_s%d_val.pt' % (a.K, a.step)), weights_only=False)
+tr = torch.load(os.path.join(C.CACHE, 'K%d_s%d%s_clients.pt' % (a.K, a.step, SUF)), weights_only=False)
+va = torch.load(os.path.join(C.CACHE, 'K%d_s%d%s_val.pt' % (a.K, a.step, SUF)), weights_only=False)
 rec = {'config': vars(a), 'meta': C.meta(), 'n_train': len(tr['boxes']), 'n_val': len(va['boxes'])}
 
 # ── trivial predictor ────────────────────────────────────────────────────────

@@ -53,7 +53,7 @@ Census (`restart/code/inventory.py`): 200 folders, **89 sessions**, 231,557 fram
 216,210 with a target. `track1_test` / `track2_test` are excluded (tracking splits,
 incomplete labels).
 
-## 4. Environments and clients — PROPOSED (labels await confirmation)
+## 4. Environments and clients — DECIDED (2026-10-05: labels confirmed by user, 8 clients)
 
 * Labels: **sky** (incl. hazy/vignetted), **cloud**, **building**, **terrain**
   (hills, vegetation, forest). 29 folders labelled by the user (clear sky); 171
@@ -63,8 +63,8 @@ incomplete labels).
   sessions are single-environment; overall **83.3%** of target frames carry their
   session's label (disclose this impurity).
 * Sessions by dominant environment: sky 38, terrain 26, building 15, cloud 10.
-* Proposed clients: **8 = 2 per environment** (non-IID by background, one shared
-  architecture). Alternative: 5 (sky x2 + one each). PENDING user choice.
+* Clients: **8 = 2 per environment** (non-IID by background, one shared
+  architecture). Decided by the user 2026-10-05.
 
 ## 5. Data pools — PROPOSED (built after §4 is confirmed)
 
@@ -123,8 +123,7 @@ Every environment must appear in test, val and clients.
 
 ## 10. Open items — PENDING
 
-1. Confirm/correct environment labels (esp. the 35 low-confidence ones).
-2. Number of clients: 8 (2 per environment) or 5.
-3. Privacy unit: frame-level (disclosed) or session-level.
+1. ~~Labels~~ confirmed 2026-10-05. 2. ~~Clients~~ 8, decided 2026-10-05.
+3. Privacy unit: frame-level by default (not yet confirmed by the user).
 4. Deadline — sizes the number of DRL training runs and trials in Phase 4.
 5. Kiani et al., ICLR 2025 — add the PDF so the comparison uses what it actually says.

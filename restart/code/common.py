@@ -51,6 +51,27 @@ def load_batch(paths):
     return (x - MEAN) / STD
 
 
+_FOLDER_LIST = {}
+
+
+def load_batch_temporal(paths, gap=5):
+    """Causal 3-frame input: channels = grayscale frames (t-2*gap, t-gap, t), clamped
+    at the folder start (Phase 1 Amendment 2)."""
+    ims = []
+    for p in paths:
+        d, name = os.path.split(p)
+        lst = _FOLDER_LIST.get(d)
+        if lst is None:
+            lst = _FOLDER_LIST[d] = sorted(x for x in os.listdir(d) if x.endswith('.jpg'))
+        i = lst.index(name)
+        ch = [cv2.imread(os.path.join(d, lst[max(0, i - k * gap)]), cv2.IMREAD_GRAYSCALE) for k in (2, 1, 0)]
+        if any(c.shape != (H, W) for c in ch):
+            raise ValueError('unexpected size in %s' % d)
+        ims.append(torch.from_numpy(np.stack(ch)))
+    x = torch.stack(ims).float().div_(255)
+    return (x - MEAN) / STD
+
+
 def encode(boxes):
     """Targets on the stride-16 grid. boxes: list of xywh or None."""
     n = len(boxes)

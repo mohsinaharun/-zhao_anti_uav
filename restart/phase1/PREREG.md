@@ -82,3 +82,27 @@ Interpretation made explicit: for each remediation configuration the DP learning
 rate is re-selected at sigma = 0 from {0.01, 0.03, 0.1} by val mAP (seed 0), exactly
 as for the first configuration. C stays 45.8 (it is a property of the model at
 init, not of B). Gate criteria unchanged.
+
+## Amendment 2 — 2026-10-05, before any temporal-input run: single vs 3-frame input
+
+Motivation (diagnostic, `restart/figures/phase1_error_examples.jpg`): the top-1
+detection lands on static clutter (lit windows, bright specks on hillsides) in 24% of
+val frames with a drone (52% in terrain); 49.5% of drone-free frames get a
+detection with score >= 0.3. Static clutter does not move; a drone does.
+
+* **S (single)**: current input, frame t replicated to 3 channels.
+* **T (temporal, causal)**: the 3 input channels are the grayscale frames
+  **(t-10, t-5, t)** (clamped at the folder start). Causal, so it stays usable for
+  real-time detection. Same frozen MobileNetV3-Small (K=9), same head, same labels
+  (frame t's box), same sampled frames t (every 5th). No change to the trainable
+  parameter count, so the DP analysis is unaffected.
+* Procedure, per variant, paired seeds 0-2:
+  1. non-DP: lr chosen from {0.003, 0.01, 0.03} on seed 0, then 3 seeds;
+  2. DP at the canonical config (B=1,024, 12 epochs, lr 0.03), sigma = 2, 3 seeds,
+     with C re-measured for T by the same rule (median per-sample grad norm at init).
+* **Adopt T** if BOTH: (a) non-DP mean val mAP(T) - mAP(S) >= **+0.03**, and
+  (b) DP sigma=2 mean val mAP(T) >= mAP(S) - **0.02**. Otherwise keep S.
+* If T is adopted: re-run the full G1b noise sweep for T (sigma 0..32, 3 seeds,
+  B=1,024) so the canonical config's gate is re-established on the new input.
+* Descriptive (not a criterion): the error breakdown (hit / mislocated / wrong place
+  / false alarm) for both variants.
