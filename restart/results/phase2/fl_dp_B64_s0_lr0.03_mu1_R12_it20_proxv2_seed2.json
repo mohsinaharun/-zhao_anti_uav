@@ -1,0 +1,126 @@
+{
+ "config": {
+  "mode": "fl",
+  "dp": true,
+  "sigma": 0.0,
+  "C": 45.8,
+  "B": 64,
+  "lr": 0.03,
+  "mu": 1.0,
+  "rounds": 12,
+  "local_epochs": 1,
+  "local_iters": 20,
+  "seed": 2,
+  "tag": "fl_dp_B64_s0_lr0.03_mu1_R12_it20_proxv2_seed2"
+ },
+ "meta": {
+  "code_commit": "b830a3d",
+  "code_dirty": true,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-06 04:30:07"
+ },
+ "client_sizes": {
+  "c0": 1970,
+  "c1": 1884,
+  "c2": 1500,
+  "c3": 1300,
+  "c4": 6031,
+  "c5": 6162,
+  "c6": 2999,
+  "c7": 3300
+ },
+ "history": [
+  {
+   "round": 1,
+   "val_map50": 0.0003701304709910243,
+   "seconds": 3.3712799549102783
+  },
+  {
+   "round": 2,
+   "val_map50": 0.00012320097402719032,
+   "seconds": 5.26285982131958
+  },
+  {
+   "round": 3,
+   "val_map50": 0.1647619425484434,
+   "seconds": 7.228678226470947
+  },
+  {
+   "round": 4,
+   "val_map50": 0.25190290713961117,
+   "seconds": 9.111941814422607
+  },
+  {
+   "round": 5,
+   "val_map50": 0.3290494761961889,
+   "seconds": 10.961699724197388
+  },
+  {
+   "round": 6,
+   "val_map50": 0.36025420659612734,
+   "seconds": 12.817480564117432
+  },
+  {
+   "round": 7,
+   "val_map50": 0.2820654372456607,
+   "seconds": 14.745266437530518
+  },
+  {
+   "round": 8,
+   "val_map50": 0.3785643688734906,
+   "seconds": 16.591768741607666
+  },
+  {
+   "round": 9,
+   "val_map50": 0.4139673461551749,
+   "seconds": 18.406612634658813
+  },
+  {
+   "round": 10,
+   "val_map50": 0.428688082065002,
+   "seconds": 20.34184718132019
+  },
+  {
+   "round": 11,
+   "val_map50": 0.4460437937839499,
+   "seconds": 22.202540159225464
+  },
+  {
+   "round": 12,
+   "val_map50": 0.4246607216472774,
+   "seconds": 24.058777809143066
+  }
+ ],
+ "val_map50": 0.4246607216472774,
+ "val_map50_by_env": {
+  "building": 0.6497534434630198,
+  "cloud": 0.312412662300357,
+  "sky": 0.5530757183472981,
+  "terrain": 0.18443794531379987
+ },
+ "steps_per_client": {
+  "c0": 240,
+  "c1": 240,
+  "c2": 240,
+  "c3": 240,
+  "c4": 240,
+  "c5": 240,
+  "c6": 240,
+  "c7": 240
+ },
+ "epsilon_delta1e-5": {
+  "c0": Infinity,
+  "c1": Infinity,
+  "c2": Infinity,
+  "c3": Infinity,
+  "c4": Infinity,
+  "c5": Infinity,
+  "c6": Infinity,
+  "c7": Infinity
+ },
+ "epsilon_max": Infinity,
+ "epsilon_median": Infinity,
+ "seconds": 25.145535230636597
+}
