@@ -44,3 +44,14 @@ so the reported results can be read against everything that was tried.
   starts at the untrained model's norms (C = 55 in round 1, 13-36 in round 2) — too
   large, so early rounds are over-noised — and only settles at ~5-6 from round 3, where
   it stays flat. No evidence of useful per-round variation in gradient scale.
+
+## Phase 4 (2026-10-09)
+
+* **Pre-registered proxy simulator ("8 pseudo-clients by session") does not train.**
+  With one recording per pseudo-client, FedAvg fails completely even without noise:
+  reward 0.002-0.004 on the proxy-val sessions, and the model cannot fit its own
+  training frames (0.036). The data are fine: the same frames pooled in one client
+  give 0.60-0.61, split IID over 8 clients 0.65-0.74, and a model trained on the real
+  clients scores 0.68 on those reward sessions. Cause: extreme non-IID (each client =
+  one flight) -> client drift. The real clients (2-13 recordings each) are milder and
+  train fine. Finding in its own right; simulator redesign pending user decision.
