@@ -185,16 +185,24 @@ def _check_and_mark():
     for f in glob.glob(os.path.join(_MARK_DIR, 'run_*.json')):
         try:
             old = _json.load(open(f))
+        except FileNotFoundError:                   # removed by a concurrent process
+            continue
         except Exception:
             old = {'boot': 0, 'started': '?'}
         same_boot = abs(old.get('boot', 0) - boot) <= 120
         if same_boot and not _pid_alive(int(os.path.basename(f)[4:-5])):
-            os.remove(f)                            # killed this boot, not a power loss
+            try:
+                os.remove(f)                        # killed this boot, not a power loss
+            except FileNotFoundError:               # another process started at the same moment
+                pass
         elif not same_boot:
             with open(_SHUTDOWN_FLAG, 'a') as fh:
                 fh.write('run started %s died with the machine (marker %s)\n'
                          % (old.get('started'), os.path.basename(f)))
-            os.remove(f)
+            try:
+                os.remove(f)
+            except FileNotFoundError:
+                pass
     mine = os.path.join(_MARK_DIR, 'run_%d.json' % os.getpid())
     _json.dump({'boot': boot, 'started': time.strftime('%Y-%m-%d %H:%M:%S')}, open(mine, 'w'))
     atexit.register(lambda: os.path.exists(mine) and os.remove(mine))
