@@ -180,7 +180,8 @@ def episode(data, seed, pol, op, explore_std=0.0, random_actions=False):
     for t in range(R):
         spent = budget.eps_worst(env.sigmas, data['qs']) / tgt if env.sigmas else 0.0
         X.append(features(obs, t, R, spent))
-        a = float(np.random.uniform()) if random_actions else pol.act(obs, t, R, spent, explore_std)
+        # warm-up: centred on the even share (a = 0.5) with the initial exploration std (Amendment 2)
+        a = float(np.clip(np.random.normal(0.5, STD0), 0, 1)) if random_actions else pol.act(obs, t, R, spent, explore_std)
         if random_actions:
             pol.act(obs, t, R, spent)                     # keep the policy's sequence in step
         A.append(a)

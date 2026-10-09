@@ -55,3 +55,9 @@ so the reported results can be read against everything that was tried.
   clients scores 0.68 on those reward sessions. Cause: extreme non-IID (each client =
   one flight) -> client drift. The real clients (2-13 recordings each) are milder and
   train fine. Finding in its own right; simulator redesign pending user decision.
+* **Phase 4 agent training attempt 1 discarded (implementation bug).** The online
+  action measured "share of remaining budget" in a zCDP-style unit that understates the
+  real (subsampled-RDP) cost at low sigma, so high shares burned the budget early and
+  forced sigma = 20 later (reward 0). After ~107 episodes A4 had converged to
+  "spend everything in round 1" (reward 0); A5 reached 0.16. Fixed by measuring spend in
+  exact accountant units (Amendment 2). Logs kept in results/phase4/superseded_attempt1/.

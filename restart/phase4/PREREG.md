@@ -133,3 +133,20 @@ the simulator; the deployed checkpoint is the one with the best mean evaluation 
 G4b: mean training reward of episodes 276-300 vs 1-25, Welch 95% CI on the difference.
 Gate G4a passed: budget matching within 0.1% (offline) / 0.002% (online); the shared
 environment (`fl_env.py`) reproduces a stored Phase 3 baseline bit-for-bit.
+
+## Amendment 2 — 2026-10-09, implementation corrections (no design change), before the agent training that is reported
+
+* **Action -> sigma mapping corrected to match §2/§4's "share of the REMAINING budget".**
+  The first implementation measured spend as sigma_even / sqrt(share), a zCDP-style unit
+  that badly understates the true cost at low sigma under Poisson subsampling: one high
+  share burned most of the budget and forced later rounds to sigma = 20 (32/40 random
+  schedules collapsed at R=12, sigma 2). Now spend is measured in the accountant's own
+  additive unit: the worst client's RDP at the order that is optimal for the uniform
+  schedule; round t spends share x (remaining / rounds left); the last round solves the
+  exact epsilon remainder. Verified: share = 1 every round reproduces the uniform schedule
+  exactly; budget error < 1e-5; all-minimum shares give a smooth back-loaded schedule.
+* **Warm-up exploration** (first 20 episodes, unspecified in §4): actions ~ N(0.5, 0.3)
+  clipped to [0, 1] (centred on the even share, with the pre-registered initial
+  exploration std), replacing U(0, 1), which overspends on average (mean share 1.35).
+* The first training attempt (~107 episodes per agent at P, broken mapping) is discarded
+  and kept in `results/phase4/superseded_attempt1/`; logged in NEGATIVE_RESULTS.md.

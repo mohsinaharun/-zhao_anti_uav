@@ -90,7 +90,73 @@ def scale_to_budget(shape, target_eps, qs, steps=STEPS, tol=1e-3):
     return sig.tolist(), f(mid)
 
 
+_UNIT = {}
+
+
+def _unit(target_eps, qs, R, steps=STEPS):
+    """Additive budget unit for online arms: the worst client's RDP at the order alpha* that is
+    optimal for the uniform schedule meeting target_eps. RDP at a fixed order adds exactly
+    across rounds, so 'share of the remaining budget' is measured in true accountant units."""
+    key = (round(target_eps, 9), tuple(round(q, 12) for q in qs), R, steps)
+    if key not in _UNIT:
+        qw = max(qs)                                           # smallest client = worst epsilon
+        lo, hi = SIG_MIN, SIG_MAX
+        for _ in range(80):
+            mid = np.sqrt(lo * hi)
+            lo, hi = (lo, mid) if eps_worst([mid] * R, qs, steps) < target_eps else (mid, hi)
+        su = hi
+        rdp = _rdp_round(float(qw), float(su), steps) * R
+        _, best_alpha = _rdp.get_privacy_spent(orders=ALPHAS, rdp=rdp, delta=DELTA)
+        ai = int(np.argmin(np.abs(np.asarray(ALPHAS) - best_alpha)))
+        _UNIT[key] = (qw, ai, float(rdp[ai]))
+    return _UNIT[key]
+
+
 def sigma_for_round(history, share, rounds_left, target_eps, qs, steps=STEPS):
+    """Online arms (§2/§4): this round spends `share` x (remaining budget / rounds left), with
+    budget measured as the worst client's RDP at the uniform schedule's optimal order (additive,
+    exact accountant units). Pushed up if finishing every later round at SIG_MAX would exceed the
+    budget; the last round solves for the exact epsilon remainder."""
+    R = len(history) + rounds_left
+    qw, ai, total = _unit(target_eps, qs, R, steps)
+    rdp_at = lambda sg: float(_rdp_fast(qw, sg, steps)[ai])
+
+    def eps_with(sig_now, rest_sigma):
+        return eps_worst(list(history) + [sig_now] + [rest_sigma] * (rounds_left - 1), qs, steps)
+
+    def solve(fn, lo=SIG_MIN, hi=SIG_MAX):                 # sigma with fn(sigma) == target
+        if fn(hi) > target_eps:
+            return hi
+        if fn(lo) <= target_eps:
+            return lo
+        for _ in range(60):
+            mid = np.sqrt(lo * hi)
+            lo, hi = (mid, hi) if fn(mid) > target_eps else (lo, mid)
+        return hi
+
+    if rounds_left == 1:
+        return solve(lambda sg: eps_with(sg, sg))
+    rem = max(total - sum(rdp_at(h) for h in history), 0.0)
+    cost = share * rem / rounds_left
+    lo, hi = SIG_MIN, SIG_MAX                               # rdp_at is decreasing in sigma
+    if rdp_at(hi) >= cost:
+        sig = hi
+    elif rdp_at(lo) <= cost:
+        sig = lo
+    else:
+        for _ in range(60):
+            mid = np.sqrt(lo * hi)
+            lo, hi = (mid, hi) if rdp_at(mid) > cost else (lo, mid)
+        sig = hi
+    if eps_with(sig, SIG_MAX) > target_eps:
+        sig = solve(lambda sg: eps_with(sg, SIG_MAX))
+    return float(sig)
+
+
+def sigma_for_round_zcdp(history, share, rounds_left, target_eps, qs, steps=STEPS):
+    """SUPERSEDED (2026-10-09): measured spend as sigma_even / sqrt(share), a zCDP-style unit that
+    badly understates the true cost at low sigma under subsampling; random shares then burn the
+    budget early and force later rounds to SIG_MAX. Kept for the record (NEGATIVE_RESULTS.md)."""
     """Online arms (§2/§4): choose this round's sigma. `history` = sigmas already used.
     The agent's `share` (0.25-4) scales this round's spend relative to spending the
     remaining budget evenly over the rounds left. Spend is measured as the uniform sigma
