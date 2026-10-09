@@ -22,6 +22,13 @@ def _load(pool, K=9):
     return torch.load(os.path.join(C.CACHE, 'K%d_s5_%s.pt' % (K, pool)), weights_only=False)
 
 
+REAL_SIZES = [1970, 1884, 1500, 1300, 6031, 6162, 2999, 3300]   # real clients c0..c7 (every-5th frame)
+
+
+def _load_step(pool, step, K=9):
+    return torch.load(os.path.join(C.CACHE, 'K%d_s%d_%s.pt' % (K, step, pool)), weights_only=False)
+
+
 def _session_of_paths(paths, pool):
     f2s = {f['folder']: s for s, v in C.SPLIT['pools'][pool].items() for f in v['folders']}
     return [f2s[os.path.basename(os.path.dirname(p))] for p in paths]
@@ -51,12 +58,17 @@ def build_data(world, eval_pool='val'):
         ev = _load(eval_pool)
         d['Xe'], d['Be'] = ev['feats'].to(C.DEV), ev['boxes']
     else:
+        # Phase 4 Amendment 1: 8 pseudo-clients from EVERY frame of the 8 proxy training
+        # sessions, mixed across sessions, each exactly the size of its real counterpart.
+        p1 = _load_step('proxy', 1)
+        ps1 = _session_of_paths(p1['paths'], 'proxy')
         excl = set(SIM_REWARD_SESSIONS) | {FEATURE_SESSION}
-        train_sess = sorted(s for s in C.SPLIT['pools']['proxy'] if s not in excl)
-        assert len(train_sess) == 8, train_sess
-        d['clients'] = {'p%d' % k: torch.tensor([i for i, s in enumerate(psess) if s == ss], device=C.DEV)
-                        for k, ss in enumerate(train_sess)}
-        d['X'], d['Y'] = d['Xp'], d['Yp']
+        assert len({s for s in C.SPLIT['pools']['proxy'] if s not in excl}) == 8
+        pool = torch.tensor([i for i, s in enumerate(ps1) if s not in excl])
+        perm = pool[torch.randperm(len(pool), generator=torch.Generator().manual_seed(20261009))]
+        cuts = np.cumsum(REAL_SIZES)
+        d['clients'] = {'p%d' % k: perm[a:b].to(C.DEV) for k, (a, b) in enumerate(zip(np.r_[0, cuts[:-1]], cuts))}
+        d['X'], d['Y'] = p1['feats'].to(C.DEV), [y.to(C.DEV) for y in _ys(p1)]
         ridx = [i for i, s in enumerate(psess) if s in SIM_REWARD_SESSIONS]
         d['Xe'], d['Be'] = px['feats'][torch.tensor(ridx)].to(C.DEV), [px['boxes'][i] for i in ridx]
     d['sizes'] = {c: len(ix) for c, ix in d['clients'].items()}

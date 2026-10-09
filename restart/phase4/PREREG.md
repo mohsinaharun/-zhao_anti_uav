@@ -101,3 +101,35 @@ For each: **WIN** if the Holm-adjusted test rejects AND the mean difference > 0;
 
 Estimated compute: tuning ~1 h, agent training ~4-6 h (proxy simulator), evaluation
 5 arms x 20 seeds x 3 operating points ~ 4-5 h.
+
+## Amendment 1 — 2026-10-09, user-confirmed, before any agent training or evaluation
+
+**Simulator (§5) redesigned; the pre-registered version cannot train.**
+* As registered (8 pseudo-clients = 8 single proxy sessions): FedAvg fails even without
+  noise (reward 0.002-0.004; cannot fit its own training frames). The data are fine
+  (pooled 0.60, IID 0.65-0.74; a real-trained model scores 0.68 on the reward sessions):
+  one-recording clients drift apart. Logged in NEGATIVE_RESULTS.md.
+* User decisions: (1) 8 pseudo-clients built from MIXED sessions, matching the real
+  client setup exactly; (2) simulator budget matched on EPSILON (same Opacus RDP
+  accountant, worst-client convention), not sigma.
+* With every-5th-frame proxy data the pseudo-clients are ~4x smaller than real clients,
+  so epsilon-matching needs sigma 7.6-16 and the simulated model learns nothing (reward
+  0.000-0.010). Logged.
+* **Implemented (user-confirmed):** pseudo-clients are filled from EVERY frame of the 8
+  proxy training sessions (29,633 available), randomly mixed across sessions (seed
+  20261009), each EXACTLY the size of its real counterpart (1970, 1884, 1500, 1300, 6031,
+  6162, 2999, 3300). Sampling rates therefore equal the real ones, so the epsilon-matched
+  simulator sigma equals the real sigma (2 / 2 / 4) exactly, and the simulator's noise
+  response matches the real setup (uniform reward 0.282 / 0.354 / 0.097 vs real val
+  0.286 / ~0.29-0.32 / 0.093). Cost (disclosed): consecutive frames are near-duplicates,
+  so simulator data is less diverse than the real clients'.
+* Unchanged: reward = proxy sessions 20190926_183400 + 3700000000002_153918; server
+  feature set = proxy session 01_2192 (same in simulator and real deployment); C*
+  calibrated on the every-5th-frame proxy pool (same as every other run).
+
+**Implementation notes (no design change).** Checkpoint rule (§5): every 25 training
+episodes the current deterministic policy runs 3 evaluation episodes (seeds 900-902) in
+the simulator; the deployed checkpoint is the one with the best mean evaluation reward.
+G4b: mean training reward of episodes 276-300 vs 1-25, Welch 95% CI on the difference.
+Gate G4a passed: budget matching within 0.1% (offline) / 0.002% (online); the shared
+environment (`fl_env.py`) reproduces a stored Phase 3 baseline bit-for-bit.
