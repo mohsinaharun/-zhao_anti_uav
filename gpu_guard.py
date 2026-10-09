@@ -185,10 +185,8 @@ def _check_and_mark():
     for f in glob.glob(os.path.join(_MARK_DIR, 'run_*.json')):
         try:
             old = _json.load(open(f))
-        except FileNotFoundError:                   # removed by a concurrent process
-            continue
-        except Exception:
-            old = {'boot': 0, 'started': '?'}
+        except Exception:                           # removed / half-written by a concurrent process:
+            continue                                # never treat an unreadable marker as a shutdown
         same_boot = abs(old.get('boot', 0) - boot) <= 120
         if same_boot and not _pid_alive(int(os.path.basename(f)[4:-5])):
             try:

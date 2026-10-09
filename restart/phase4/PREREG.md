@@ -150,3 +150,16 @@ environment (`fl_env.py`) reproduces a stored Phase 3 baseline bit-for-bit.
   exploration std), replacing U(0, 1), which overspends on average (mean share 1.35).
 * The first training attempt (~107 episodes per agent at P, broken mapping) is discarded
   and kept in `results/phase4/superseded_attempt1/`; logged in NEGATIVE_RESULTS.md.
+
+## Amendment 3 — 2026-10-09, bug fix (no design change), before the reported A5 training
+
+* **A5 (TD3+GRU) next-step target misaligned.** The target value for step t+1 was computed
+  by running the GRU over X[1..t+1] (dropping X[0]) instead of the full prefix X[0..t+1], so
+  the critic learned from histories the agent never saw. Fixed: critics and target actor run
+  over the full T+1 observation sequence and the value at index t+1 is used. Verified:
+  Q(step 5) from the full sequence equals Q from the prefix X[0..5] (0.067904); the old
+  shifted version gave 0.055860. A5's 58-episode run with the bug is discarded
+  (`results/phase4/superseded_attempt2_A5/`). A4 (DDPG, no recurrent state) is unaffected.
+* Infrastructure: a start-up race in `gpu_guard.py` crashed A4's first operating point (P)
+  and raised a false "shutdown detected" flag (no reboot: uptime since 2026-10-05). Fixed;
+  A4-P runs after A4's other operating points. Throttling is numerically neutral.

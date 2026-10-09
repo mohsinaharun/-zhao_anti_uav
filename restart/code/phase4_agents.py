@@ -129,16 +129,18 @@ class TD3GRU:
             return
         for _ in range(n):
             eps = [self.buf[i] for i in np.random.randint(len(self.buf), size=bs)]
-            X = torch.tensor([e['X'][:-1] for e in eps], dtype=torch.float32, device=DEV)    # bs x T x 5
-            X2 = torch.tensor([e['X'][1:] for e in eps], dtype=torch.float32, device=DEV)
+            # Full sequences (T+1 observations): the GRU must encode the WHOLE prefix X[0..t+1]
+            # for the next-step target (fixed 2026-10-09: it previously re-read from X[1]).
+            Xf = torch.tensor([e['X'] for e in eps], dtype=torch.float32, device=DEV)       # bs x (T+1) x 5
             A = torch.tensor([e['A'] for e in eps], dtype=torch.float32, device=DEV).unsqueeze(2)
             r = torch.tensor([e['reward'] for e in eps], dtype=torch.float32, device=DEV)
             T = A.shape[1]
+            X = Xf[:, :T]
             with torch.no_grad():
-                a2 = (self.ta(X2) + (torch.randn_like(A) * noise).clamp(-clip, clip)).clamp(0, 1)
-                q2 = torch.min(self.t1(X2, a2), self.t2(X2, a2)).squeeze(2)                  # bs x T
+                af = (self.ta(Xf) + (torch.randn(Xf.shape[0], T + 1, 1, device=DEV) * noise).clamp(-clip, clip)).clamp(0, 1)
+                qn = torch.min(self.t1(Xf, af), self.t2(Xf, af)).squeeze(2)[:, 1:]          # Q at t+1, bs x T
                 y = torch.zeros(len(eps), T, device=DEV)
-                y[:, :-1] = q2[:, :-1]                                                      # gamma = 1
+                y[:, :-1] = qn[:, :-1]                                                      # gamma = 1
                 y[:, -1] = r
             lq = ((self.q1(X, A).squeeze(2) - y) ** 2).mean() + ((self.q2(X, A).squeeze(2) - y) ** 2).mean()
             self.oq.zero_grad(); lq.backward(); self.oq.step()

@@ -61,3 +61,6 @@ so the reported results can be read against everything that was tried.
   forced sigma = 20 later (reward 0). After ~107 episodes A4 had converged to
   "spend everything in round 1" (reward 0); A5 reached 0.16. Fixed by measuring spend in
   exact accountant units (Amendment 2). Logs kept in results/phase4/superseded_attempt1/.
+* **Phase 4 A5 attempt 2 discarded (bug).** GRU target misalignment (next-step value computed
+  without the first observation). 58 episodes at P; after warm-up the policy drifted to
+  overspending (mean reward 0.03). Fixed in Amendment 3; logs in superseded_attempt2_A5/.
