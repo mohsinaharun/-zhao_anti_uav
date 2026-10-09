@@ -102,7 +102,11 @@ if a.clip == 'calibrated':
     cal = C.Net(a.K).to(C.DEV); cal.load_state_dict(glob.state_dict())
     copt = torch.optim.SGD(cal.parameters(), lr=a.lr, momentum=0.9)
     cg = torch.Generator().manual_seed(a.seed * 15485863)
-    for _ in range(2 * a.local_iters):
+    # '2 rounds worth' of local steps: local_iters per round (FL edge setup), else the
+    # number of steps one local epoch takes on the (single) client (central mode).
+    per_round = a.local_iters or a.local_epochs * -(-max(sizes.values()) // B)
+    rec['C_star_calib_steps'] = 2 * per_round
+    for _ in range(2 * per_round):
         jj = torch.randint(0, Xp.shape[0], (B,), generator=cg).to(C.DEV)
         copt.zero_grad(); C.per_sample_loss(cal(Xp[jj].float()), *[y[jj] for y in Yp]).mean().backward(); copt.step()
     gm = GSM(C.Net(a.K).to(C.DEV)); gm._module.load_state_dict(cal.state_dict())
