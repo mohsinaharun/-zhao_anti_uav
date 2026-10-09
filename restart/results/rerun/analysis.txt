@@ -1,0 +1,60 @@
+R1 — central sigma sweep, B=64, calibrated C* (10 seeds)
+sigma    mAP C*             95% CI      eps      C* | old B64 C45.8 old B1024 C45.8
+0        0.5617  [0.5198, 0.6036]      inf    5.32 |        0.5727          0.5674
+0.5      0.4653  [0.4445, 0.4861]     9.60    5.32 |        0.0089          0.4989
+1        0.3319  [0.2881, 0.3757]     1.14    5.32 |        0.0000          0.4462
+1.5      0.1940  [0.1464, 0.2416]     0.53    5.32 |        0.0000          0.3617
+2        0.0661  [0.0277, 0.1045]     0.35    5.32 |        0.0000          0.3105
+2.5      0.0371  [-0.0019, 0.0760]     0.27    5.32 |        0.0000          0.2197
+3        0.0165  [-0.0136, 0.0467]     0.22    5.32 |        0.0000          0.1685
+3.5      0.0146  [-0.0165, 0.0456]     0.19    5.32 |        0.0000          0.1251
+4        0.0012  [-0.0012, 0.0035]     0.17    5.32 |        0.0000          0.1009
+
+R2 — FL x DP 2x2, edge config (B=64; FL: 8 clients, 20 local iters, mu=0), C* (10 seeds)
+  no-DP cells: central 0.5952, FL 0.4857
+
+  sigma 1   central eps 1.14 | FL client eps max 5.73 / median 3.14
+    neither (central, no DP)   0.5952
+    FL, no DP                  0.4857
+    DP, no FL (central)        0.3319
+    FL + DP                    0.3576
+    cost of FL (no DP)         -0.1095 [-0.1215, -0.0975]  wins 0/10
+    cost of DP (central)       -0.2633 [-0.3047, -0.2220]  wins 0/10
+    cost of DP inside FL       -0.1282 [-0.1739, -0.0825]  wins 0/10
+    interaction                +0.1352 [+0.0904, +0.1799]  wins 10/10
+
+  sigma 2   central eps 0.35 | FL client eps max 1.86 / median 0.97
+    neither (central, no DP)   0.5952
+    FL, no DP                  0.4857
+    DP, no FL (central)        0.0661
+    FL + DP                    0.2862
+    cost of FL (no DP)         -0.1095 [-0.1215, -0.0975]  wins 0/10
+    cost of DP (central)       -0.5291 [-0.5683, -0.4900]  wins 0/10
+    cost of DP inside FL       -0.1995 [-0.2451, -0.1539]  wins 0/10
+    interaction                +0.3296 [+0.2768, +0.3825]  wins 10/10
+
+  sigma 4   central eps 0.17 | FL client eps max 0.79 / median 0.41
+    neither (central, no DP)   0.5952
+    FL, no DP                  0.4857
+    DP, no FL (central)        0.0012
+    FL + DP                    0.0929
+    cost of FL (no DP)         -0.1095 [-0.1215, -0.0975]  wins 0/10
+    cost of DP (central)       -0.5941 [-0.6073, -0.5809]  wins 0/10
+    cost of DP inside FL       -0.3928 [-0.4464, -0.3392]  wins 0/10
+    interaction                +0.2013 [+0.1465, +0.2561]  wins 10/10
+
+R3 — FedProx mu sweep, FL+DP edge config, C* (10 seeds)
+  sigma 1 (eps max 5.73 / median 3.14, identical for every mu)
+    mu=0 (base)  0.3576
+    mu=0.01     0.3559   diff -0.0017 [-0.0101, +0.0067]  wins 5/10
+    mu=0.03     0.3553   diff -0.0022 [-0.0107, +0.0063]  wins 6/10
+    mu=0.1      0.3674   diff +0.0098 [+0.0002, +0.0194]  wins 8/10
+    mu=0.3      0.3736   diff +0.0161 [-0.0124, +0.0446]  wins 6/10
+    mu=1        0.3716   diff +0.0140 [-0.0284, +0.0565]  wins 6/10
+  sigma 2 (eps max 1.86 / median 0.97, identical for every mu)
+    mu=0 (base)  0.2862
+    mu=0.01     0.2872   diff +0.0010 [-0.0031, +0.0052]  wins 5/10
+    mu=0.03     0.2886   diff +0.0023 [-0.0045, +0.0092]  wins 6/10
+    mu=0.1      0.2886   diff +0.0024 [-0.0100, +0.0147]  wins 8/10
+    mu=0.3      0.2948   diff +0.0085 [-0.0085, +0.0256]  wins 6/10
+    mu=1        0.2361   diff -0.0501 [-0.0847, -0.0156]  wins 1/10
