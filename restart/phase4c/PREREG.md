@@ -1,6 +1,6 @@
 # Phase 4c — Does the Phase 4 finding hold on other data? (CIFAR-10 and Pascal VOC)
-Pre-registration DRAFT, written 2026-10-11 BEFORE any Phase 4c code is run. Awaiting user
-approval. Todo suggestion 8 (second dataset). Phase 4 / 4b results are not changed.
+Pre-registration, written 2026-10-11 BEFORE any Phase 4c code is run. **Approved as written by the
+user 2026-10-11 ("go ahead without stopping").** Todo suggestion 8 (second dataset). Phase 4 / 4b results are not changed.
 
 Finding under test (Phase 4, drone, P): at equal epsilon, schedules with LESS noise in later
 rounds (A2 tuned exponential, A3 theory rho_t ~ sqrt(a_t)) beat uniform (+0.014 mAP, 16/4 each).
@@ -81,3 +81,19 @@ CIFAR-10 first (cheaper), then VOC. Per dataset: data + cache -> G1 -> G2 + P_d 
 pulse test -> A2 tuning -> test evaluation -> analysis (report). Estimated ~4-6 GPU-hours per
 dataset plus ~1 h caching for VOC. Outputs `restart/results/phase4c/{cifar10,voc}/`; failures in
 NEGATIVE_RESULTS.md. Any deviation is a dated amendment here before the affected run.
+
+## Implementation notes — 2026-10-11, before any Phase 4c run (no design change)
+* Code: `code/phase4c.py` (all stages, resumable), launcher `code/run_phase4c.ps1`.
+  Its FL environment is fl_env.FLEnv with the task pluggable; regression check: with the drone
+  task it reproduces the stored Phase 3 baseline exactly (seed 0, sigma 2, R 12: mAP 0.217505,
+  C* 6.050429).
+* VOC multi-object extension, regression check on the drone val frames: targets identical,
+  per-sample loss identical (max abs diff 0), mAP identical (0.156307 vs 0.156307 on synthetic
+  detections). VOC 'difficult' objects: not training targets; in evaluation they are COCO
+  'iscrowd' (neither hit nor miss), the analogue of VOC's ignore rule. Two objects whose centres
+  fall in the same grid cell share one objectness target (each keeps its box term). Decoding
+  keeps the top 20 peaks per image (drone: 5, one target per frame).
+* G1 "clear margin" made concrete: mean sigma-0 val score of seeds 100-102 >= trivial + 0.10.
+  The sigma-0 runs keep clipping at C* (no noise), as in the drone sweep.
+* CIFAR-10 download verified (md5 c58f30108f718f92721af3b95e74349a). Splits saved in
+  `data/phase4c_{cifar10,voc}_split.json`. Raw data and feature caches under `cache/` (gitignored).
