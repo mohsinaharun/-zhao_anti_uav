@@ -65,3 +65,4 @@ p3_only/p3h_heterogeneous_sigma/results/ckpt_*.pt
 # restart: cached features (regenerable)
 restart/cache/
 !restart/data/
+restart/literature/*.pdf
