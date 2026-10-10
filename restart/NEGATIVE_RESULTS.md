@@ -64,3 +64,9 @@ so the reported results can be read against everything that was tried.
 * **Phase 4 A5 attempt 2 discarded (bug).** GRU target misalignment (next-step value computed
   without the first observation). 58 episodes at P; after warm-up the policy drifted to
   overspending (mean reward 0.03). Fixed in Amendment 3; logs in superseded_attempt2_A5/.
+* **Phase 4: learned allocation does not help (pre-registered verdict).** At P, A5 ties
+  uniform (-0.0005) and loses to A2/A3 (-0.014/-0.015, Holm p 0.011/0.0013); A4 loses to
+  uniform (0/20). A4 failed G4b at P and S2 (collapses to sigma = 20 late; 0.000 on test).
+  A5 pinned to the minimum action (most back-loaded allowed schedule) - too steep on real
+  data. A3 (theory) loses to uniform at S1 (-0.025): noisy per-round a_t estimates.
+  Details: phase4/RESULTS.md.
