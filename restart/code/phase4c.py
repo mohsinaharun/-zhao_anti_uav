@@ -402,7 +402,12 @@ class Env:
         for _ in range(2 * self.it):
             jj = torch.randint(0, d['Xp'].shape[0], (self.B,), generator=cg).to(C.DEV)
             copt.zero_grad(); T.loss(cal(d['Xp'][jj].float()), *[y[jj] for y in d['Yp']]).mean().backward(); copt.step()
-        gm = GradSampleModule(T.net(self.K).to(C.DEV)); gm._module.load_state_dict(cal.state_dict())
+        if self.K == C.CUT_MAX:                                   # per-sample engine as phase2_fl.GSM
+            gm = GradSampleModule(T.net(self.K).to(C.DEV))
+        else:
+            from opacus.grad_sample import GradSampleModuleExpandedWeights
+            gm = GradSampleModuleExpandedWeights(T.net(self.K).to(C.DEV), batch_first=True, loss_reduction='mean')
+        gm._module.load_state_dict(cal.state_dict())
         cj = torch.randperm(d['Xp'].shape[0], generator=torch.Generator().manual_seed(s * 104729 + 999))[:self.calib_n].to(C.DEV)
         norms = []
         for s0 in range(0, len(cj), 128):
