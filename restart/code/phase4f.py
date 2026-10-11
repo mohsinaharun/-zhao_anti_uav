@@ -226,6 +226,7 @@ def scoring_check():
 
 # ── gate (PREREG §5) ──────────────────────────────────────────────────────────
 def stage_gate(cx):
+    VisDrone.split()                                              # sets VisDrone.trivial
     while True:
         triv = VisDrone.trivial
         bar = max(0.104, triv + 0.10)
