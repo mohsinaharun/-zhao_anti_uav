@@ -1,0 +1,11 @@
+{
+ "repro": "OK",
+ "meta": {
+  "code_commit": "dbd3e07",
+  "code_dirty": true,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-12 00:37:37"
+ }
+}

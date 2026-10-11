@@ -103,3 +103,11 @@ so the reported results can be read against everything that was tried.
   attack at every DP level. Variant L (noise-corrected cosine) still loses to FedAvg in all 4 conditions.
   Prediction 5 (Variant N only partial) failed in the good direction: N recovered. Details:
   phase5b/RESULTS.md.
+* **Phase 5c: Variant N does not recover at every privacy level (pre-registered).** It recovers at
+  sigma 0, 0.5 and 2, but LOSES to FedAvg under IPM at sigma 1 (eps 5.73: -0.030 [-0.052, -0.009], 6/14)
+  and under ALIE at sigma 4 (eps 0.79: -0.011, 1/19, at the floor). Prediction 1 failed.
+* **Phase 5c: Variant N is broken by an adaptive trust-capture attack (pre-registered).** At eps 1.86
+  attackers who know the rule and the root update drive it to 0.0005 mAP (18/20 seeds at 0), a LOSS vs
+  FedAvg under the same attack (-0.013, 1/18) and below plain FLTrust. FedAvg is also badly hurt
+  (0.059 -> 0.014; prediction "FedAvg hurt much less" failed). Attackers took ~60% of trust weight, not
+  the predicted >= 85% (honest cosine rises once the model is damaged). Details: phase5c/RESULTS.md.
