@@ -115,3 +115,20 @@ Code `code/phase5.py` (new; reuses `fl_env`, `budget`, `phase4_agents` read-only
 `code/run_phase5.ps1`, root-pool features via `code/cache_features.py --pools root`. Results
 `results/phase5/`, report `phase5/RESULTS.md`, failures in NEGATIVE_RESULTS.md. ~6 GPU-hours plus
 ~1 h code and checks. Any deviation: dated amendment here before the affected run.
+
+## Amendment 1 — 2026-10-11, after a scratch smoke test, BEFORE any Phase 5 grid run
+* **Approved as written by the user 2026-10-11 ("go ahead without stopping").**
+* Smoke test (scratch directory, seed 200, not part of the results): reproduction exact (FedAvg /
+  no attack / A1 = Phase 4's 0.028740); all attacks and aggregators run.
+* **Problem:** the FLTrust root update as specified in §5 (clients' procedure WITHOUT clipping)
+  diverges: its norm grew 6 → 142 → 68,500 → 4.7 million within 5 rounds in the no-DP block, and
+  FLTrust rescales every client update to that norm (final mAP 0.000; FedAvg on the same seed 0.270).
+  Unclipped SGD at lr 0.03 is unstable on this detection loss (the same effect broke two C*
+  calibrations in Phase 4f); the clients are stable only because they clip. In the DP smoke runs the
+  root norm stayed at 2-6, but nothing guarantees that.
+* **Change:** the root update uses the clients' procedure exactly, minus the noise: per-sample
+  clipping at the run's C*, Poisson sampling (B 64 on the root set), 20 iterations, lr 0.03,
+  momentum 0.9, noise multiplier 0. This is FLTrust's premise (server update computed like a client's).
+  Nothing else changes.
+* Root set size, for the record: §3 quoted the pool's 5,578 target frames before frame sampling;
+  at stride 5 (as every pool) the root set is 1,300 frames, 1,117 with a target.
