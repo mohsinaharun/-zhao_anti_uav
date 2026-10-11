@@ -1,5 +1,6 @@
 # Phase 4g — Round-count convergence check
-Pre-registration DRAFT, written 2026-10-12 BEFORE any Phase 4g code is written or run. Awaiting approval.
+Pre-registration, written 2026-10-12 BEFORE any Phase 4g code is written or run.
+**Approved by the user 2026-10-12 WITH both proposed additions (+A) no-DP ceiling and (+B) uniform at each R ("Approved with +A and +B, go ahead without stopping").**
 Added after external feedback. Purely additive: Phase 4 / 5 files and results are read, never changed or
 re-run.
 

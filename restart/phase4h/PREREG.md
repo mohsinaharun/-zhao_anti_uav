@@ -1,5 +1,6 @@
 # Phase 4h — Relative-action DRL agent (A5-relative)
-Pre-registration DRAFT, written 2026-10-12 BEFORE any Phase 4h code is written or run. Awaiting approval.
+Pre-registration, written 2026-10-12 BEFORE any Phase 4h code is written or run.
+**Approved as written by the user 2026-10-12 (state = A5's exact 5 inputs) ("Approved with +A and +B, go ahead without stopping").**
 Added after external feedback. Purely additive: Phase 4 files, agents and results are read, never
 changed or re-run.
 
