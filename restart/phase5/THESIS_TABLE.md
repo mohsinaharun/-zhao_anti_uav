@@ -1,8 +1,8 @@
 ## Do Byzantine-robust aggregators protect a DP federated drone detector?
 
 At a meaningful privacy level (ε = 1.86), none of the three robust aggregators protects the
-detector: each one scores below plain FedAvg with no attack, and below FedAvg under every attack,
-whichever attack is used. FLTrust fails because DP noise drowns its trust signal:
+detector: each one scores below plain FedAvg with no attack, and below FedAvg under each of the
+three attacks. FLTrust fails because DP noise drowns its trust signal:
 honest updates agree with the server's clean update with a cosine of only 0.008, so trust-weighted
 aggregation leaves almost no useful step (−75% without attack). The same FLTrust matches FedAvg
 without DP and beats it under the Fang attack, so the failure comes from DP, not from FLTrust.
