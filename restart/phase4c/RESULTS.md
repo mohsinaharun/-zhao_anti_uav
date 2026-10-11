@@ -62,3 +62,6 @@ local steps cannot learn VOC's large, varied, multi-object scenes: even 1,440 no
 steps on 1,500 proxy images reach only 0.108 mAP on those same images (0.036 val). The midpoint
 operating point would also sit at eps 11-29, far from the drone/CIFAR eps 1.86.
 **No replication verdict for VOC.** Any continuation needs a design change (amendment).
+
+**Decision 2026-10-11 (user): VOC is stopped.** No amendment; VOC stays without a replication
+verdict and Phase 4c's replication evidence is CIFAR-10 only. VOC code and splits are kept as-is.
