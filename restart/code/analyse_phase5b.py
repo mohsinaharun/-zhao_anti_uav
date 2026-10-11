@@ -131,11 +131,12 @@ def main():
         ms[l] = {'honest_cos': cs, 'shrink': sh,
                  'ratio_clean': float(np.mean(list(m(l, 'fltrust', 'none').values())) / np.mean(list(m(l, 'fedavg', 'none').values())))}
         print('  sigma %-4s cos %.4f  shrink %.4f (1/%.1f)  ratio %.3f' % (l, cs, sh, 1 / sh, ms[l]['ratio_clean']))
-    rr = [ms[l]['ratio_clean'] for l in ms]
+    lv = list(ms)
+    rr = [ms[l]['ratio_clean'] for l in lv]
     for k in ('honest_cos', 'shrink'):
-        rho = stats.spearmanr([ms[l][k] for l in ms], rr).correlation
-        ms['spearman_' + k] = float(rho)
-        print('  Spearman(%s, ratio) = %+.2f -> %s' % (k, rho, 'TRACKS' if rho == 1 else 'does not track fully'))
+        rho = float(stats.spearmanr([ms[l][k] for l in lv], rr).correlation)
+        ms['spearman_' + k] = rho
+        print('  Spearman(%s, ratio) = %+.2f -> %s' % (k, rho, 'TRACKS' if rho > 0.999 else 'does not track fully'))
     res['mechanism'] = ms
 
     # ── Part 2 ──────────────────────────────────────────────────────────────
@@ -165,7 +166,7 @@ def main():
     # predictions
     p1 = [ms[l]['ratio_clean'] for l in ('4', '2', '1', '0.5', '0')]
     pr = {
-        'P1_ratio_monotone_and_both_track': all(x < y for x, y in zip(p1, p1[1:])) and ms['spearman_honest_cos'] == 1 and ms['spearman_shrink'] == 1,
+        'P1_ratio_monotone_and_both_track': all(x < y for x, y in zip(p1, p1[1:])) and ms['spearman_honest_cos'] > 0.999 and ms['spearman_shrink'] > 0.999,
         'P2_FLTrust_LOSES_clean_at_sigma_1_and_0.5': all(res['part1'][l]['F2']['fltrust-FedAvg | none']['verdict'] == 'LOSS' for l in ('1', '0.5')),
         'P3_median_Krum_LOSE_clean_every_DP_level': all(res['part1'][l]['F2']['%s-FedAvg | none' % a]['verdict'] == 'LOSS' for l in LEVELS for a in ('median', 'krum')),
         'P4_L_LOSES_clean_and_worse_than_FLTrust_under_ALIE': res['part2']['fltrust_L']['F6']['fltrust_L-FedAvg | none']['verdict'] == 'LOSS'

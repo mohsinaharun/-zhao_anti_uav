@@ -97,3 +97,9 @@ so the reported results can be read against everything that was tried.
   not change attack damage under FLTrust (6/6 equivalent). A5 loses to A3 under every attack but
   also without attack; its schedule is fixed (identical under all attacks). Also: the unclipped
   FLTrust root update as first specified diverged (Amendment 1). Details: phase5/RESULTS.md.
+* **Phase 5b: plain FLTrust loses to FedAvg at every DP level (pre-registered).** sigma 0.5 / 1 / 4
+  (eps 30.16 / 5.73 / 0.79): LOSS without attack and under every attack (only exception: tie under Fang
+  at sigma 4, at the floor). Deficit halves at eps 30, unchanged at 5.73. Median and Krum lose without
+  attack at every DP level. Variant L (noise-corrected cosine) still loses to FedAvg in all 4 conditions.
+  Prediction 5 (Variant N only partial) failed in the good direction: N recovered. Details:
+  phase5b/RESULTS.md.
