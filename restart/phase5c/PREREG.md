@@ -1,6 +1,6 @@
 # Phase 5c — Variant N follow-up checks
 Pre-registration DRAFT, written 2026-10-12 BEFORE any Phase 5c code is written or run.
-**Awaiting the user's review and approval; nothing runs until then.**
+**Approved as written by the user 2026-10-12 ("Approved as written, go ahead without stopping").**
 Purely additive: Phase 5 / 5b files and results are read, never changed or re-run.
 
 Variant N (Phase 5b): FLTrust with every client update rescaled to the norm an honest DP update is
