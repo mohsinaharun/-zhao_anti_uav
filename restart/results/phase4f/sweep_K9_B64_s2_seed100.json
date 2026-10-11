@@ -1,0 +1,35 @@
+{
+ "task": "visdrone",
+ "name": "sweep_K9_B64_s2_seed100",
+ "pool": "val",
+ "seed": 100,
+ "sigmas": [
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0
+ ],
+ "score": 0.045430191540887246,
+ "metric": "mAP@0.5 (car, tile-level)",
+ "eps_max": 1.8568790542503415,
+ "C_star": 4.663177967071533,
+ "K": 9,
+ "B": 64,
+ "seconds": 20.438807249069214,
+ "meta": {
+  "code_commit": "d5291f0",
+  "code_dirty": false,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-11 14:17:25"
+ }
+}
