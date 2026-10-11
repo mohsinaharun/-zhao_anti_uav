@@ -1,6 +1,6 @@
 # Phase 4e — Alternative allocation methods: A7, Bayesian-optimisation schedule search
-Pre-registration DRAFT, written 2026-10-11 BEFORE any Phase 4e code is run. Awaiting user
-approval. **A new, separate line of investigation: not part of the Phase 1-5 plan and not a
+Pre-registration, written 2026-10-11 BEFORE any Phase 4e code is run. **Approved as written by the
+user 2026-10-11 ("go ahead without stopping").** **A new, separate line of investigation: not part of the Phase 1-5 plan and not a
 revision of Phase 4/4b/4c/4d**, whose files and results are not touched (Phase 4's stored test
 runs are only READ for the paired comparison). Outputs: `results/phase4e/` only.
 
@@ -68,3 +68,12 @@ are re-run into `results/phase4e/` and must match exactly (shows the pairing is 
 ## 6. Estimated time
 Search + selection: ~1 h at P, ~1 h at S2, ~2 h at S1 (simulator ~10-25 s per run); test
 evaluation 60 runs ~30 min; code + gate ~1-2 h. Total ~5-6 h.
+
+## Implementation notes — 2026-10-11, before any Phase 4e run (no design change)
+* Code: `code/bo.py` (GP + expected improvement, numpy/scipy only; no new packages installed),
+  `code/phase4e.py` (gate, search, selection, test evaluation, analysis).
+* Gate G4e-a made concrete: test function f(x) = 0.30 - 0.01 ||x - x*||^2 on the same box,
+  x* = (-0.6, -1.2, -1.5, -1.9) (a strongly back-loaded optimum near the box edge), observation
+  noise sd 0.02 per 3-seed trial (simulator scale), same 16 + 84 budget and the same top-5 /
+  6-seed selection. PASS if regret of the selected point <= 10% of f(x*) - f(uniform).
+* The uniform reference on the 6 selection seeds is run for reporting only (not in the budget).
