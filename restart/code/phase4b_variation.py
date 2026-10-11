@@ -16,7 +16,7 @@ ARMS = ('A1', 'A3', 'A5')
 KEYS = ('proxy_loss', 'proxy_gnorm', 'proxy_dloss')
 
 
-def run(d, arm, seed, pol):
+def run(d, arm, seed, pol, return_env=False):
     R, _ = P4.OPS['P']
     tgt = P4.target_eps('P', d['qs'])
     env = fl_env.FLEnv(d, seed); obs = [env.reset()]
@@ -29,8 +29,9 @@ def run(d, arm, seed, pol):
             spent = budget.eps_worst(env.sigmas, d['qs']) / tgt if env.sigmas else 0.0
             share = 0.25 * 16 ** float(pol.act(obs, t, R, spent))
             obs.append(env.step(budget.sigma_for_round(env.sigmas, share, R - t, tgt, d['qs'])))
-    return {'arm': arm, 'seed': seed, 'sigmas': env.sigmas, 'C_star': env.C_star,
-            'obs': [{k: float(o[k]) for k in KEYS} for o in obs], 'meta': C.meta()}
+    rec = {'arm': arm, 'seed': seed, 'sigmas': env.sigmas, 'C_star': env.C_star,
+           'obs': [{k: float(o[k]) for k in KEYS} for o in obs], 'meta': C.meta()}
+    return (rec, env) if return_env else rec
 
 
 def analyse():
