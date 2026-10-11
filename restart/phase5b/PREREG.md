@@ -1,6 +1,6 @@
 # Phase 5b — FLTrust robustness checks
 Pre-registration DRAFT, written 2026-10-11 BEFORE any Phase 5b code is written or run.
-**Awaiting the user's review and approval; nothing runs until then.**
+**Approved by the user 2026-10-11 ("Approved, run both σ levels and both variants").**
 Purely additive: Phase 5 files and results are read, never changed or re-run.
 
 ## 0. What Phase 5 found, and one correction to the mechanism
