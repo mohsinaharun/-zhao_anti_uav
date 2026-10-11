@@ -99,3 +99,14 @@ Download (done) -> tiles + features -> scoring check -> sigma-0 + sweep (gate) -
 tuning -> test -> analysis. ~415 runs; estimated 8-12 GPU-hours. Code `code/phase4f.py`, launcher
 `code/run_phase4f.ps1`. Report `phase4f/RESULTS.md` in Phase 4c's format; failures in
 NEGATIVE_RESULTS.md. Any deviation: dated amendment here before the affected run.
+
+## Note — 2026-10-11, after the quality gate, BEFORE the pulse / tuning / test runs (no design change)
+* Quality gate (§5) CLEARED at K 9 / B 64: sigma-0 VAL mAP 0.2363 / 0.2397 / 0.2383 (seeds
+  100-102, mean 0.2381) vs bar 0.104 (trivial 0.0000). Scoring check: GT 1.000; head ceiling 0.941.
+* The non-private C* calibration step (Phase 4c code, unchanged) diverges for 2 planned seeds: the
+  dense VisDrone loss is much larger than the drone's. C* = 5,912 (seed 104, A2 tuning) and 116.8
+  (seed 203, TEST) vs 2.96-8.92 for all other 44 planned seeds (pulse 0-19 all fine). C* depends
+  only on the seed, so a diverged seed hits every arm identically (paired difference ~0): it can
+  only dilute effects, never create one.
+* Kept as registered (no seed replaced): the primary analysis uses all 20 test seeds. Reported in
+  addition, descriptively only: the same comparisons without seed 203.
