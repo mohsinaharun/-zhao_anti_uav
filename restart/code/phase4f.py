@@ -290,8 +290,16 @@ def analyse(cx):
         cls = 'CIFAR-LIKE'
     else:
         cls = 'INTERMEDIATE'
+    sc = {a: {s: json.load(open(os.path.join(OUT, 'eval_%s_seed%d.json' % (a, s))))['score'] for s in P4C.TEST_SEEDS if s != 203}
+          for a in A}                                             # PREREG note: descriptive, without diverged seed 203
+    ex = {'%s-%s' % p: P4C.compare(sc[p[0]], sc[p[1]]) for p in (('A2', 'A1'), ('A3', 'A1'), ('A6', 'A1'), ('A3', 'A2'))
+          if p[0] in sc and p[1] in sc}
     res['phase4f'] = {'better_decay_arm': best, 'relative_gain': g, 'decay_win': win, 'pulse_verdict': pa['verdict'],
-                      'class': cls, 'profiles': prof, 'reference_gain': {'drone': 0.24, 'cifar10': 0.017}}
+                      'class': cls, 'profiles': prof, 'reference_gain': {'drone': 0.24, 'cifar10': 0.017},
+                      'without_seed_203_descriptive': ex}
+    for k, c in ex.items():
+        print('  without seed 203: %-6s diff %+.4f [%+.4f, %+.4f]  W/L %d/%d  p %.4f (unadjusted, descriptive)' % (
+            k, c['diff'], c['ci95'][0], c['ci95'][1], c['wins'], c['losses'], c['p']))
     C.save_json(res, os.path.join(OUT, 'analysis.json'))
     print('\nPhase 4f: better decay arm %s, relative gain %+.1f%%, decay WIN %s, pulse %s -> %s' % (best, 100 * g, win, pa['verdict'], cls))
     for k, v in prof.items():
