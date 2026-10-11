@@ -78,3 +78,8 @@ so the reported results can be read against everything that was tried.
   pre-registered configurations (bar 0.104); oracle check 0.990 rules out a scoring bug; the
   frozen-trunk head cannot learn VOC in 240 local steps. Also: the K = 7 fallback first crashed
   (Opacus hooks in C* calibration; fixed with expanded weights, as phase2_fl).
+* **Phase 4d: gradient-norm feedback signal also fails (pre-registered; A5-v2 not trained).**
+  The proxy gradient norm (3-round rolling mean) persists within a run but does not predict the
+  final VAL mAP (|rho| <= 0.30 in rounds 1-8 under A3) and moves in lockstep with the round's own
+  noise dose (r = +0.68 [0.51, 0.85]); positive control (proxy loss) r = +0.88. Details:
+  phase4d/RESULTS.md.
