@@ -1,0 +1,35 @@
+{
+ "task": "cifar10",
+ "name": "pulse_K9_B64_k11_seed5",
+ "pool": "val",
+ "seed": 5,
+ "sigmas": [
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  4.0,
+  2.0
+ ],
+ "score": 0.2734,
+ "metric": "top-1 accuracy",
+ "eps_max": 1.7930054212353306,
+ "C_star": 7.0104827880859375,
+ "K": 9,
+ "B": 64,
+ "seconds": 13.393964767456055,
+ "meta": {
+  "code_commit": "dcb9e5c",
+  "code_dirty": false,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-11 05:55:25"
+ }
+}

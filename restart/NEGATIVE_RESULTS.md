@@ -70,3 +70,11 @@ so the reported results can be read against everything that was tried.
   A5 pinned to the minimum action (most back-loaded allowed schedule) - too steep on real
   data. A3 (theory) loses to uniform at S1 (-0.025): noisy per-round a_t estimates.
   Details: phase4/RESULTS.md.
+* **Phase 4c CIFAR-10: "decay beats uniform" fails to replicate (pre-registered).** a_t rises late
+  exactly like the drone's, but A2 gains only +0.005 (16/4, Holm p 0.088) and every primary
+  comparison is equivalent within ±0.02. Kiani et al.'s two-phase rule is the worst arm (loses to
+  A2 on 19/20 seeds). Details: phase4c/RESULTS.md.
+* **Phase 4c VOC stopped at the gates.** Noise-free FL reaches only 0.058-0.074 mAP under all three
+  pre-registered configurations (bar 0.104); oracle check 0.990 rules out a scoring bug; the
+  frozen-trunk head cannot learn VOC in 240 local steps. Also: the K = 7 fallback first crashed
+  (Opacus hooks in C* calibration; fixed with expanded weights, as phase2_fl).

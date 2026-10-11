@@ -1,0 +1,35 @@
+{
+ "task": "cifar10",
+ "name": "sweep_K9_B64_s8_seed104",
+ "pool": "val",
+ "seed": 104,
+ "sigmas": [
+  8.0,
+  8.0,
+  8.0,
+  8.0,
+  8.0,
+  8.0,
+  8.0,
+  8.0,
+  8.0,
+  8.0,
+  8.0,
+  8.0
+ ],
+ "score": 0.1624,
+ "metric": "top-1 accuracy",
+ "eps_max": 0.36370885670501235,
+ "C_star": 7.00010871887207,
+ "K": 9,
+ "B": 64,
+ "seconds": 6.7283079624176025,
+ "meta": {
+  "code_commit": "ab19354",
+  "code_dirty": false,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-11 05:13:52"
+ }
+}

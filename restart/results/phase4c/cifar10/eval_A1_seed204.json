@@ -1,0 +1,35 @@
+{
+ "task": "cifar10",
+ "name": "eval_A1_seed204",
+ "pool": "test",
+ "seed": 204,
+ "sigmas": [
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0,
+  2.0
+ ],
+ "score": 0.2269,
+ "metric": "top-1 accuracy",
+ "eps_max": 1.8568790542503415,
+ "C_star": 6.958674430847168,
+ "K": 9,
+ "B": 64,
+ "seconds": 13.418079376220703,
+ "meta": {
+  "code_commit": "dcb9e5c",
+  "code_dirty": false,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-11 06:11:44"
+ }
+}

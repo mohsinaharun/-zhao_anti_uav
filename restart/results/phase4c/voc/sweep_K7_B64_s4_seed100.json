@@ -1,0 +1,35 @@
+{
+ "task": "voc",
+ "name": "sweep_K7_B64_s4_seed100",
+ "pool": "val",
+ "seed": 100,
+ "sigmas": [
+  4.0,
+  4.0,
+  4.0,
+  4.0,
+  4.0,
+  4.0,
+  4.0,
+  4.0,
+  4.0,
+  4.0,
+  4.0,
+  4.0
+ ],
+ "score": 0.009942164139671484,
+ "metric": "mAP@0.5 (class-agnostic)",
+ "eps_max": 1.6326635661157198,
+ "C_star": 3.7105119228363037,
+ "K": 7,
+ "B": 64,
+ "seconds": 63.8685839176178,
+ "meta": {
+  "code_commit": "dcb9e5c",
+  "code_dirty": false,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-11 05:57:59"
+ }
+}
