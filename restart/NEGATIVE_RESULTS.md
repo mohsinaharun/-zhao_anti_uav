@@ -89,3 +89,11 @@ so the reported results can be read against everything that was tried.
   A2 and A3; at S1 (eps 2.72) it ties uniform. The search's high simulator scores were mostly
   noise (S2/S1 picks were no better than uniform on fresh selection seeds). Same compute as A5
   (330 vs 336 runs). Details: phase4e/RESULTS.md.
+* **Phase 5: FLTrust is not an effective defence under DP at P (pre-registered).** At eps 1.86 it
+  LOSES to FedAvg with no attack (-0.044, 2/18; -75%) and under ALIE / IPM / Fang (0/20, 1/19, 3/17).
+  Cause: honest DP updates have cosine ~0.008 with the root update, so trust-weighted, rescaled
+  aggregation leaves almost no useful step. Without DP it ties FedAvg (and wins under Fang).
+  It also fails "keeps more averaging than median and Krum" (worse than median). The schedule does
+  not change attack damage under FLTrust (6/6 equivalent). A5 loses to A3 under every attack but
+  also without attack; its schedule is fixed (identical under all attacks). Also: the unclipped
+  FLTrust root update as first specified diverged (Amendment 1). Details: phase5/RESULTS.md.
