@@ -1,0 +1,17 @@
+{
+ "gt_direct_map50": 1.0,
+ "encode_decode_ceiling_map50": 0.9405940594059405,
+ "val_tiles": 2192,
+ "val_cars": 14054,
+ "cars_sharing_a_cell": 777,
+ "trivial_val": 6.613887841689981e-06,
+ "pass": true,
+ "meta": {
+  "code_commit": "a7c02e3",
+  "code_dirty": true,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-11 14:10:57"
+ }
+}
