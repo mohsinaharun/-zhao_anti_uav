@@ -83,3 +83,9 @@ so the reported results can be read against everything that was tried.
   final VAL mAP (|rho| <= 0.30 in rounds 1-8 under A3) and moves in lockstep with the round's own
   noise dose (r = +0.68 [0.51, 0.85]); positive control (proxy loss) r = +0.88. Details:
   phase4d/RESULTS.md.
+* **Phase 4e: Bayesian-optimisation schedule search (A7) is not a genuine improvement
+  (pre-registered).** At P (eps 1.86) A7 beats uniform (+0.016 [0.005, 0.026], Holm p 0.019) but
+  ties A3 (+0.001) and A2 (+0.002), so it fails the "beat both" rule. At S2 (eps 0.79) it loses to
+  A2 and A3; at S1 (eps 2.72) it ties uniform. The search's high simulator scores were mostly
+  noise (S2/S1 picks were no better than uniform on fresh selection seeds). Same compute as A5
+  (330 vs 336 runs). Details: phase4e/RESULTS.md.
