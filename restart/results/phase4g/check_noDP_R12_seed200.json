@@ -1,0 +1,115 @@
+{
+ "block": "check",
+ "arm": "noDP",
+ "R": 12,
+ "k": null,
+ "seed": 200,
+ "sigmas": [
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "test_map50": 0.2702878147936642,
+ "eps": null,
+ "eps_max": Infinity,
+ "target_eps": 1.8568790542503415,
+ "C_star": 8.197830200195312,
+ "obs": [
+  {
+   "round": 0,
+   "proxy_loss": 3.697771430015564,
+   "proxy_gnorm": 59.36874008178711,
+   "proxy_dloss": 0.0
+  },
+  {
+   "round": 1,
+   "proxy_loss": 0.8605445027351379,
+   "proxy_gnorm": 13.415396690368652,
+   "proxy_dloss": -2.837226927280426
+  },
+  {
+   "round": 2,
+   "proxy_loss": 0.7131331264972687,
+   "proxy_gnorm": 11.352519989013672,
+   "proxy_dloss": -0.14741137623786926
+  },
+  {
+   "round": 3,
+   "proxy_loss": 0.5464369803667068,
+   "proxy_gnorm": 11.305405616760254,
+   "proxy_dloss": -0.16669614613056183
+  },
+  {
+   "round": 4,
+   "proxy_loss": 0.675056517124176,
+   "proxy_gnorm": 11.120591163635254,
+   "proxy_dloss": 0.12861953675746918
+  },
+  {
+   "round": 5,
+   "proxy_loss": 0.45643460750579834,
+   "proxy_gnorm": 11.067667007446289,
+   "proxy_dloss": -0.21862190961837769
+  },
+  {
+   "round": 6,
+   "proxy_loss": 0.5148245394229889,
+   "proxy_gnorm": 10.363544464111328,
+   "proxy_dloss": 0.05838993191719055
+  },
+  {
+   "round": 7,
+   "proxy_loss": 0.4930451661348343,
+   "proxy_gnorm": 9.782868385314941,
+   "proxy_dloss": -0.021779373288154602
+  },
+  {
+   "round": 8,
+   "proxy_loss": 0.4681779593229294,
+   "proxy_gnorm": 10.201600074768066,
+   "proxy_dloss": -0.024867206811904907
+  },
+  {
+   "round": 9,
+   "proxy_loss": 0.4493350386619568,
+   "proxy_gnorm": 9.2370023727417,
+   "proxy_dloss": -0.018842920660972595
+  },
+  {
+   "round": 10,
+   "proxy_loss": 0.46066127717494965,
+   "proxy_gnorm": 9.318401336669922,
+   "proxy_dloss": 0.011326238512992859
+  },
+  {
+   "round": 11,
+   "proxy_loss": 0.4729578495025635,
+   "proxy_gnorm": 10.853104591369629,
+   "proxy_dloss": 0.01229657232761383
+  },
+  {
+   "round": 12,
+   "proxy_loss": 0.4430527985095978,
+   "proxy_gnorm": 10.212010383605957,
+   "proxy_dloss": -0.029905050992965698
+  }
+ ],
+ "seconds": 10.195445537567139,
+ "meta": {
+  "code_commit": "0f47a50",
+  "code_dirty": true,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-12 02:16:11"
+ }
+}

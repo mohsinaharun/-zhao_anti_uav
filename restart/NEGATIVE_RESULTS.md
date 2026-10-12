@@ -111,3 +111,8 @@ so the reported results can be read against everything that was tried.
   FedAvg under the same attack (-0.013, 1/18) and below plain FLTrust. FedAvg is also badly hurt
   (0.059 -> 0.014; prediction "FedAvg hurt much less" failed). Attackers took ~60% of trust weight, not
   the predicted >= 85% (honest cosine rises once the model is damaged). Details: phase5c/RESULTS.md.
+* **Phase 4g: more rounds do not close the DP gap (pre-registered; verdict NOISE CEILING / PLATEAU).**
+  At fixed eps 1.86, A2 scores 0.073 / 0.086 / 0.057 / 0.040 at R 12 / 25 / 50 / 100, while no-DP rises
+  to 0.33-0.34, so G falls 0.29 -> 0.12. 50 - 25 is a LOSS (-0.029, 7/13); 100 - 50 is -0.017 (6/14,
+  Holm p 0.056, so not formally DECLINING). Uniform shows the same shape. The pre-registered "flat"
+  prediction was too optimistic: past 25 rounds accuracy falls. Details: phase4g/RESULTS.md.
