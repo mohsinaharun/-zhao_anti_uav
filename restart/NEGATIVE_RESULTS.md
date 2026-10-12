@@ -116,3 +116,9 @@ so the reported results can be read against everything that was tried.
   to 0.33-0.34, so G falls 0.29 -> 0.12. 50 - 25 is a LOSS (-0.029, 7/13); 100 - 50 is -0.017 (6/14,
   Holm p 0.056, so not formally DECLINING). Uniform shows the same shape. The pre-registered "flat"
   prediction was too optimistic: past 25 rounds accuracy falls. Details: phase4g/RESULTS.md.
+* **Phase 4h: the relative-action agent (A5-relative, +-20% around A3, exact budget) is not a genuine
+  improvement at any operating point (pre-registered).** P: ties A3 and A2 (both equivalent), +0.012 vs
+  uniform (Holm p 0.14). S1: LOSS vs A2 (-0.018, 3/17). S2: beats uniform (+0.007) but ties A2/A3.
+  It removes A5's harm (WIN vs A5 at S2; +0.012 at P, n.s.) but adds no gain. Training reward never
+  rose (G4b fails at all 3 points). The adjustment pattern is STRUCTURED and uses feedback
+  (predictions 2 and 3b failed), but it does not improve test accuracy. Details: phase4h/RESULTS.md.
