@@ -122,3 +122,10 @@ so the reported results can be read against everything that was tried.
   It removes A5's harm (WIN vs A5 at S2; +0.012 at P, n.s.) but adds no gain. Training reward never
   rose (G4b fails at all 3 points). The adjustment pattern is STRUCTURED and uses feedback
   (predictions 2 and 3b failed), but it does not improve test accuracy. Details: phase4h/RESULTS.md.
+* **Phase 5d: a per-client trust-weight cap does not stop the adaptive attack on Variant N
+  (pre-registered; no margin is a genuine fix).** Caps of 2/K, 1.5/K and 1/K hold the two attackers at
+  exactly 50% / 37.5% / 25% of the weight (from ~73%). Under trust-capture the model still collapses:
+  0.0004 / 0.0000 / 0.0058 mAP (19, 20 and 14 of 20 seeds at 0); a1 "collapse prevented" ties at every
+  margin. At m 1.5 it is a LOSS vs FedAvg (0/19). A cap-aware attacker is no stronger. Predictions 2, 4
+  (reason) and 5 failed: weight share is not what limits damage under DP. The cap costs nothing
+  otherwise (no LOSS; m 1 WINS under ALIE, +0.031). Details: phase5d/RESULTS.md.

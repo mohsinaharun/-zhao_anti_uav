@@ -34,12 +34,13 @@ Operating points: **P** = 12 rounds, σ 2, ε 1.86 (primary); **S1** = 25 rounds
 | 5 | Robust aggregation under DP (FLTrust, median, Krum) | FLTrust loses to FedAvg at ε 1.86 (−75% clean); schedule does not change attack damage |
 | 5b | FLTrust across DP levels; fixes | Plain FLTrust loses at every DP level; Variant N (DP-aware norm) recovers at ε 1.86 |
 | 5c | Variant N at five DP levels; adaptive attack | Recovers at σ 0/0.5/2, loses at σ 1 and 4; broken by an adaptive trust-capture attack |
+| **5d** | **Per-client trust-weight cap on Variant N (κ = 2/K, 1.5/K, 1/K)** | **Not a fix at any margin.** The cap holds the attackers at 2κ (50/37.5/25%), yet the model still collapses under trust-capture (0.000-0.006 mAP). Cap-aware attacker no stronger. Free otherwise; at 1/K it improves ALIE (+0.031) |
 
 ## Where things are
 * `phaseN/PREREG.md`, `phaseN/RESULTS.md`, and for later phases `phaseN/THESIS_TABLE.md`.
 * **Main allocation thesis tables:** `phase4f/THESIS_TABLE.md` (Table X: generalization; X.2: all
   allocation methods incl. A7 and A5-relative; X.3: round count, Phase 4g). Security tables:
-  `phase5/`, `phase5b/`, `phase5c/THESIS_TABLE.md`.
+  `phase5/`, `phase5b/`, `phase5c/`, `phase5d/THESIS_TABLE.md`.
 * Code: `code/` (`phaseN.py` + `analyse_phaseN.py`, `run_phaseN.ps1` detached launchers).
 * Raw runs and analysis JSON: `results/phaseN/`. Figures: `figures/` (Phases 1-3) and the repo-root
   `plots/` (Phase 4c onward, e.g. `plots/phase4g_rounds.png`, `plots/phase4h_relative_agent.png`).
