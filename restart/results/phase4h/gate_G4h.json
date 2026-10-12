@@ -1,0 +1,43 @@
+{
+ "P": {
+  "zero_reproduces_A3_max_rel": 0.0,
+  "A3_eps_exact": 1.8584952620685724,
+  "target_eps_phase4": 1.8568790542503415,
+  "random_200_max_rel_err_vs_A3_eps": 5.705768132172764e-06
+ },
+ "S1": {
+  "zero_reproduces_A3_max_rel": 0.0,
+  "A3_eps_exact": 2.719181601449154,
+  "target_eps_phase4": 2.7214531322175506,
+  "random_200_max_rel_err_vs_A3_eps": 5.405967676784946e-06
+ },
+ "S2": {
+  "zero_reproduces_A3_max_rel": 0.0,
+  "A3_eps_exact": 0.7932421912092374,
+  "target_eps_phase4": 0.7934805005952117,
+  "random_200_max_rel_err_vs_A3_eps": 2.4011271416484817e-07
+ },
+ "test_P": {
+  "200": [
+   0.03933960147966069,
+   0.03933960147966069
+  ],
+  "201": [
+   0.091574527108234,
+   0.091574527108234
+  ],
+  "202": [
+   0.12346293808757862,
+   0.12346293808757862
+  ]
+ },
+ "ok": true,
+ "meta": {
+  "code_commit": "ad546a9",
+  "code_dirty": false,
+  "machine": "CSE-12B21L-D05",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.1+cu128",
+  "time": "2026-10-12 02:58:11"
+ }
+}

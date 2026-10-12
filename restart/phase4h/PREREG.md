@@ -101,3 +101,13 @@ Code `code/phase4h.py` (new; imports `phase4`, `phase4_agents`, `fl_env`, `budge
 `code/run_phase4h.ps1`, analysis `code/analyse_phase4h.py`, results `results/phase4h/`,
 checkpoints `cache/phase4h_ckpt/` (deployed actors copied to `results/phase4h/`), report
 `phase4h/RESULTS.md` + thesis table, failures in NEGATIVE_RESULTS.md.
+
+## Implementation note — 2026-10-12 (no design change)
+* Gate G4h passed before any training (`results/phase4h/gate_G4h.json`): zero adjustment reproduces A3
+  exactly at P / S1 / S2; 200 random sequences meet A3's budget to < 6e-6; zero policy reproduces
+  Phase 4's `eval_P_A3` test mAP bit-for-bit on seeds 200-202. The λ bisection uses 50 iterations
+  (reduced from 80 before the gate run that is reported; precision far below 1e-9 either way).
+* The first training attempt ran concurrently with the Phase 4g grid and stalled on memory (RAM and
+  GPU memory full; 2-34 of 300 episodes in ~9 h). With the user's agreement it was stopped and its
+  partial logs moved to `results/phase4h/superseded_stalled_attempt/`; training restarts from scratch
+  (same seeds) once Phase 4g is complete. Seeded training is unaffected by the stop.
