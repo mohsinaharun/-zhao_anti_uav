@@ -1,6 +1,6 @@
 # Phase 5d — Per-client trust-weight cap on Variant N
 Pre-registration DRAFT, written 2026-10-12 BEFORE any Phase 5d code is written or run.
-**Status: awaiting the user's approval. Nothing has been run.**
+**Approved by the user 2026-10-12 WITH both proposed additions (+A) cap-aware attacker and (+B) m = 1 ("Approved with +A and +B, go ahead without stopping").**
 New addition, not a revision. Phase 5 / 5b / 5c files and results are read, never changed or re-run.
 
 ## 1. Question
